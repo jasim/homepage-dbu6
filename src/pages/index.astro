@@ -56,7 +56,8 @@ function ruleParts(rule: string): RulePart[] {
        every account's ledger, as four cards over one screenshot.
     4. Import statements and categorize transactions automatically (#how):
        the header, lede and uploading statements beside an illustration of
-       the whole import, then categorizing them beside the rules file.
+       the agent writing a parser for a statement, then categorizing them
+       beside the rules file.
     5. Questions (#faq), a table of questions and answers on the desk
        engraving.
 
@@ -100,7 +101,7 @@ function ruleParts(rule: string): RulePart[] {
           <!-- The headline names it; the subtitle under it says what you do
                with it. -->
           <h1>AI workspace for your personal finance</h1>
-          <p class="hero-subtitle">Track your income and expense, see your net worth, and work fully agentically. Import statements from any bank or card as <span class="nowrap">double-entry</span> books into a local SQLite database.</p>
+          <p class="hero-subtitle">Track your income and expense, see your net worth, and import statements from anywhere. Everything in double-entry books, stored locally in SQLite.</p>
           <!-- Getting Started, with the command that makes a books folder
                (the Setup guide's first step) beside it, as you'd type it.
                Copy shows only with the script. -->
@@ -256,7 +257,7 @@ function ruleParts(rule: string): RulePart[] {
     <section class="section import" id="how">
       <div class="container">
         <!-- The heading, then uploading statements under it, beside the
-             illustration of the whole import, from statement to review; then
+             illustration of the agent writing a parser for a statement; then
              categorizing them, beside the rules file. Each part is a heading,
              what it takes in (file chips) or sorts into (round account pills,
              each with its colour dot), and its points, each a small heading
