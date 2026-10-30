@@ -1,0 +1,1307 @@
+/*
+ * The homepage (pages/index.astro), on top of the shared theme
+ * (nuaj-agent-docs/theme.css).
+ *
+ * The look: a white page, like a document. Black headings, soft black body
+ * text, grey rules, and no background colour: every chapter is on the same
+ * white, and space alone separates them. Each screenshot is a white card
+ * with a firm edge and a deep shadow, so the app stays apart from the page.
+ * The app's green (--g-leaf) is the one accent, on what is clicked: the
+ * buttons, the play tile, the links, the selected tab. The engraving
+ * (assets/desk.webp, the reference art cut out of its checkerboard) is drawn
+ * across the foot of the last section, Questions, in its own green ink.
+ *
+ * Type. One scale of seven steps, each a size with its own leading and
+ * tracking, and every piece of text on the page takes one of them. Three
+ * weights: 400 to read, 500 for what is clicked or scanned (buttons, tabs,
+ * the questions, bold lead-ins), 600 for headings and the name.
+ *
+ *   3xl   the H1                                      40 → 72px
+ *   2xl   Double-entry, the one meta-section's H2     34 → 52px
+ *   xl    section headings                            26 → 34px
+ *   lg    ledes, step headings                        19 → 21px
+ *   base  body copy, the FAQ's and agent's questions, the footer  17px (16 on a phone)
+ *   sm    buttons, tabs, header links, chips, inline code, the rules file  15px
+ *   xs    fine print: captions, the editor's status bar  13px
+ */
+
+/* A plain page: links to a section jump straight to it, without the docs
+   theme's smooth scrolling. */
+
+html {
+  scroll-behavior: auto;
+}
+
+.home-page {
+  /* Cap the layout at MacBook Retina width (84rem / 1344px) so it uses the
+     full screen on laptops without blowing up on 27"+ external monitors. */
+  --max-page: 84rem;
+  --gutter: 3rem;
+
+  --text-3xl: clamp(2.5rem, 1.2rem + 4.4vw, 4.5rem);
+  --text-2xl: clamp(2.125rem, 1.3rem + 2.6vw, 3.25rem);
+  --text-xl: clamp(1.625rem, 1.15rem + 1.2vw, 2.125rem);
+  --text-lg: clamp(1.1875rem, 1.05rem + 0.4vw, 1.3125rem);
+  --text-base: 1.0625rem;
+  --text-sm: 0.9375rem;
+  --text-xs: 0.8125rem;
+  --weight-heading: 600;
+
+  --g-ink: #000000;
+  --g-ink-2: #164b35;
+  --g-leaf: #2b6a4b;
+  --ember: #2b6a4b;
+  --ember-2: #357a58;
+  --card-edge: rgb(0 0 0 / 0.14);
+  --card-shadow:
+    0 1px 3px rgb(0 0 0 / 0.06),
+    0 24px 48px -24px rgb(0 0 0 / 0.24);
+
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f1f1ef;
+  --ink: #000000;
+  --ink-soft: #2a2a2a;
+  --muted: #787774;
+  --link: var(--g-leaf);
+  --link-underline: #a9cdb9;
+  --rule: #e9e9e7;
+  --rule-strong: #c9c9c6;
+  --highlight: #e3efe8;
+
+  /* The cards on the page: the windows, chips and files. */
+  --card: #ffffff;
+  --card-bar: #fafaf9;
+  --card-tint: #ffffff;
+  --bubble: #f1f1ef;
+
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-size: var(--text-base);
+  line-height: 1.68;
+  margin: 0;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: var(--max-page);
+  padding: 0 var(--gutter);
+  width: 100%;
+}
+
+.home-page h1,
+.home-page h2,
+.home-page h3 {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: var(--weight-heading);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.home-page h1 {
+  font-size: var(--text-3xl);
+  letter-spacing: -0.038em;
+  line-height: 1.02;
+  margin-bottom: 1.5rem;
+}
+
+.home-page h2 {
+  font-size: var(--text-xl);
+  letter-spacing: -0.026em;
+  line-height: 1.18;
+  margin-bottom: 0.9rem;
+}
+
+/* The lg step, shared by ledes, step headings, and the name. */
+
+.lede,
+.de-lede,
+.agent-lede,
+.home-page h3,
+.site-name {
+  font-size: var(--text-lg);
+  letter-spacing: -0.014em;
+  line-height: 1.4;
+}
+
+.home-page p {
+  margin: 0 0 1.2rem;
+  text-wrap: pretty;
+}
+
+.home-page p:last-child {
+  margin-bottom: 0;
+}
+
+.home-page strong {
+  color: var(--ink);
+}
+
+.home-page code {
+  background: var(--surface-soft);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  padding: 0.08em 0.22em;
+}
+
+figcaption {
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+/* The header sits straight on the surface, with no rule under it, and
+   scrolls away with the page. */
+
+.header-inner {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+  min-height: 3.75rem;
+}
+
+.site-header a {
+  text-decoration: none;
+}
+
+.site-name,
+.site-name:hover {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: var(--weight-heading);
+}
+
+.header-links {
+  align-items: center;
+  display: flex;
+  font-size: var(--text-sm);
+  gap: 1.5rem;
+}
+
+.header-links a {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-weight: var(--weight-emphasis);
+  gap: 0.4rem;
+}
+
+.header-links a:hover {
+  color: var(--link);
+}
+
+.header-links a.btn-primary {
+  color: #fff;
+}
+
+.header-links svg {
+  fill: currentColor;
+  height: 1rem;
+  width: 1rem;
+}
+
+/* Buttons: pills, the primary in the accent. */
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  align-items: center;
+  border: 1px solid;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-emphasis);
+  line-height: 1.2;
+  min-height: 2.75rem;
+  padding: 0.6rem 1.1rem;
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.btn-small {
+  min-height: 2.125rem;
+  padding: 0.35rem 0.8rem;
+}
+
+.btn-primary {
+  background: var(--g-leaf);
+  border-color: var(--g-leaf);
+  color: #fff;
+}
+
+.btn-primary:hover,
+.header-links a.btn-primary:hover {
+  background: var(--g-ink-2);
+  border-color: var(--g-ink-2);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--card);
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+.btn-secondary:hover {
+  border-color: var(--rule-strong);
+  color: var(--g-ink);
+}
+
+/* Sections: wide gaps between chapters, tight within. Every chapter is on
+   the same white; the space between them is the only divider. */
+
+.section {
+  padding: 7rem 0;
+}
+
+.section-head {
+  margin-bottom: 3rem;
+  max-width: 46rem;
+}
+
+.section-head h2 + p {
+  margin-top: 0.9rem;
+  max-width: 40rem;
+}
+
+.section-head-center,
+.section-head-center h2 + p {
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* Two-tone headings: the black clause names the thing, the grey one says why
+   it matters. Both are the same step so they read as one line of thought. */
+
+h2 .tone {
+  color: var(--muted);
+}
+
+/* Visuals. The screenshots are @2x captures: srcset "2x" with width: auto and
+   max-width: 100% keeps each at or below its native 1x size, and still lets it
+   shrink on small screens. Every one is a card with a firm edge and a deep shadow, so the white app
+   stays apart from the white page. */
+
+.shot {
+  margin: 0;
+  width: 100%;
+}
+
+.shot a {
+  cursor: zoom-in;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.shot img {
+  background: #fff;
+  border: 1px solid var(--card-edge);
+  border-radius: 0.9rem;
+  box-shadow: var(--card-shadow);
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: auto;
+}
+
+/* A screenshot at its full 1x size. On a 1x screen the browser takes src over
+   the 2x srcset and would stretch the capture to the container, so each
+   figure sets its 1x width as --shot-width. */
+
+.showcase {
+  text-align: center;
+}
+
+.showcase img {
+  margin-inline: auto;
+}
+
+.showcase img,
+.tab-panel img {
+  max-width: min(100%, var(--shot-width));
+}
+
+/* The hero: centred copy over the Overview, which lifts off the page on a
+   deeper shadow than the other cards. */
+
+.section.hero {
+  padding: 4.5rem 0 7rem;
+}
+
+.hero-copy {
+  margin: 0 auto 3rem;
+  max-width: 48rem;
+  text-align: center;
+}
+
+/* The headline at the H1 size, and under it what you do with it, a step
+   under the lede's size in an ink between the muted and the body's, on a
+   measure wide enough to keep it to a few lines. */
+
+.home-page .hero h1 {
+  margin-bottom: 1.25rem;
+}
+
+.home-page .hero-subtitle {
+  color: color-mix(in srgb, var(--muted) 65%, var(--ink));
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  letter-spacing: -0.01em;
+  line-height: 1.55;
+  margin: 0 auto 2.25rem;
+  max-width: 44rem;
+  text-wrap: balance;
+}
+
+.home-page .hero-subtitle .nowrap {
+  white-space: nowrap;
+}
+
+.lede {
+  color: var(--ink);
+}
+
+.hero-copy .actions {
+  gap: 0.75rem 1.5rem;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.hero .showcase .browser {
+  border-radius: 1rem;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.06),
+    0 30px 60px -30px rgb(0 0 0 / 0.3);
+  position: relative;
+}
+
+/* Watch the demo, over the Overview: a video control rather than a button,
+   so not Getting Started's pill. A green tile in the one accent, a little shorter than Getting Started so it doesn't outweigh
+   it, and less rounded, with white words and a white play mark, on a shadow
+   deep enough to lift it off the white screenshot. Centred on a small
+   window; on a large one held near the top, so it shows above the fold. */
+
+.shot .play {
+  align-items: center;
+  background: var(--ember);
+  border-radius: 0.625rem;
+  box-shadow:
+    0 2px 4px rgb(23 32 27 / 0.12),
+    0 12px 24px -10px rgb(12 56 38 / 0.45);
+  color: #fff;
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  gap: 0.6rem;
+  left: 50%;
+  padding: 0.3rem 1rem 0.3rem 0.85rem;
+  position: absolute;
+  text-decoration: none;
+  top: min(50%, 16rem);
+  transform: translate(-50%, -50%);
+  transition: transform 120ms ease, background 120ms ease;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.shot .play:hover {
+  background: var(--ember-2);
+  transform: translate(-50%, -50%) scale(1.04);
+}
+
+.play-mark {
+  align-items: center;
+  color: #fff;
+  display: inline-flex;
+  height: 1.875rem;
+}
+
+.play-mark svg {
+  height: 0.85rem;
+  width: 0.85rem;
+}
+
+/* The install command beside Getting Started: the line as typed at a
+   prompt, no box, with a copy icon at its end that turns to a tick once
+   copied. */
+
+.install-command {
+  align-items: center;
+  color: var(--ink-soft);
+  display: inline-flex;
+  font-size: var(--text-sm);
+  gap: 0.35rem;
+  max-width: 100%;
+}
+
+.home-page .install-command code {
+  background: none;
+  font-size: inherit;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.install-command .prompt {
+  color: var(--muted);
+  user-select: none;
+}
+
+.install-command .copy {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 0.35rem;
+  color: var(--muted);
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0.3rem;
+}
+
+.install-command .copy:hover {
+  background: var(--surface-soft);
+  color: var(--g-ink);
+}
+
+.install-command .copy svg {
+  fill: none;
+  height: 0.95rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+  width: 0.95rem;
+}
+
+.install-command .copy .icon-copied,
+.install-command .copy.copied .icon-copy {
+  display: none;
+}
+
+.install-command .copy.copied .icon-copied {
+  color: var(--g-leaf);
+  display: block;
+}
+
+/* A screenshot in a browser window: the window's dots and its address in a
+   bar over the capture, the card's edge and shadow on the window. */
+
+.browser {
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: 0.9rem;
+  box-shadow: var(--card-shadow);
+  display: inline-block;
+  max-width: min(100%, var(--shot-width));
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.browser-bar {
+  align-items: center;
+  background: var(--card-bar);
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr minmax(0, 26rem) 1fr;
+  padding: 0.5rem 0.9rem;
+}
+
+.browser-bar .address {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 0.45rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  overflow: hidden;
+  padding: 0.15rem 0.9rem;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-page .browser img {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: 100%;
+}
+
+/* Watch the demo's play mark. */
+
+[data-demo] svg {
+  fill: currentColor;
+  height: 0.75rem;
+  width: 0.75rem;
+}
+
+/* The lightboxes, the demo and a screenshot, over a dimmed page, with Close
+   above their right edge. */
+
+.demo-dialog,
+.shot-dialog {
+  background: transparent;
+  border: 0;
+  margin: auto;
+  max-width: none;
+  padding: 0;
+}
+
+.demo-dialog {
+  width: min(64rem, 100vw - 2 * var(--gutter));
+}
+
+.demo-dialog::backdrop,
+.shot-dialog::backdrop {
+  background: rgb(16 24 40 / 0.78);
+}
+
+.demo-dialog form,
+.shot-dialog form {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.6rem;
+}
+
+.dialog-close {
+  background: transparent;
+  border: 1px solid rgb(255 255 255 / 0.4);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-emphasis);
+  padding: 0.35rem 0.75rem;
+}
+
+.dialog-close:hover {
+  border-color: #fff;
+}
+
+/* A screenshot's lightbox takes about 80% of a large screen, leaving the
+   dimmed page around it to click to close, and all but 1rem of a phone's
+   (where it is closed with Close or Back). The image is fitted in it at up
+   to its full pixel size (2x, as the screenshots are @2x, so it stays
+   sharp). */
+
+.shot-dialog {
+  display: none;
+  flex-direction: column;
+  height: 85dvh;
+  max-height: none;
+  width: min(100vw - 2rem, max(80vw, 30rem));
+}
+
+.shot-dialog[open] {
+  display: flex;
+}
+
+.shot-view {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.shot-view img {
+  background: #fff;
+  border-radius: 0.5rem;
+  display: block;
+  height: auto;
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+}
+
+.video {
+  margin: 0;
+}
+
+.video .frame {
+  aspect-ratio: 16 / 9;
+  background: #000;
+  position: relative;
+}
+
+.video iframe {
+  border: 0;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
+/* Designed for AI power users: why your books suit an agent, in one column,
+   with the questions asked of the agent in it, each joined to its answer in one card: the session's window, on
+   the grey the app's window is, with the question as a strip along the top
+   and the screenshot under it, trimmed to the shape of the takes; the link
+   opens it whole. */
+
+.agent-copy {
+  max-width: 46rem;
+}
+
+.home-page .agent-copy > p,
+.agent-copy .chips {
+  margin-bottom: 1.5rem;
+}
+
+/* The agents' own marks are filled shapes in the ink, where the other
+   chips' icons are accent line drawings. */
+
+.agent-chips svg.mark {
+  fill: var(--ink);
+  stroke: none;
+}
+
+.agent-chips svg.pi {
+  stroke: var(--ink);
+  stroke-width: 1.6;
+}
+
+/* The answers, and under them the questions as a switch between them: each
+   question a line of small text with a dot, the chosen one in the ink and
+   the other muted, set close under the window like its caption. With the
+   tabs script, the answers share one cell, the hidden one kept in the
+   layout but unseen, so the cell is as tall as the taller answer and
+   choosing a question doesn't move the page. */
+
+.asks {
+  display: grid;
+  gap: 0.6rem;
+  margin: 2.75rem 0 2rem;
+}
+
+.ask-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding: 0 0.25rem;
+}
+
+.ask-cards button {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: var(--text-xs);
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  text-align: left;
+}
+
+.ask-cards button::before {
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  flex: none;
+  height: 0.45rem;
+  width: 0.45rem;
+}
+
+.ask-cards button:hover {
+  color: var(--ink-soft);
+}
+
+.ask-cards button[aria-selected="true"] {
+  color: var(--ink);
+}
+
+.ask-cards button[aria-selected="true"]::before {
+  background: var(--g-leaf);
+  border-color: var(--g-leaf);
+}
+
+.ask-cards .report-name {
+  color: inherit;
+}
+
+.asks[data-tabs="ready"] .ask {
+  grid-area: 1 / 1;
+}
+
+.asks[data-tabs="ready"] .ask[hidden] {
+  display: block;
+  visibility: hidden;
+}
+
+.ask {
+  background: var(--card-tint);
+  border: 1px solid var(--card-edge);
+  border-radius: 0.9rem;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  padding-bottom: 0.4rem;
+}
+
+.ask figcaption {
+  color: var(--ink);
+}
+
+/* The session's title bar: the window's dots, then its title. */
+
+.ask-bar {
+  align-items: center;
+  color: var(--ink-soft);
+  display: flex;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-emphasis);
+  gap: 0.9rem;
+  padding: 0.5rem 0.8rem;
+}
+
+/* The folder the session runs in, at the bar's right end. */
+
+.ask-folder {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-text);
+  margin-left: auto;
+}
+
+/* What you typed, in the app's grey bubble, at the right. */
+
+.ask-question {
+  background: var(--bubble);
+  border-radius: 0.8rem;
+  display: block;
+  font-size: var(--text-xs);
+  margin: 0.4rem 0.7rem 0.7rem auto;
+  max-width: 85%;
+  padding: 0.45rem 0.8rem;
+  text-wrap: pretty;
+  width: fit-content;
+}
+
+.ask img {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  width: 100%;
+}
+
+/* Double-entry: the title and a lede that ends on what it gives you,
+   followed directly by the reports it gives (#reports). */
+
+.de-header {
+  max-width: 46rem;
+}
+
+.home-page .agent-copy h2,
+.home-page .double-entry h2 {
+  font-size: var(--text-2xl);
+  letter-spacing: -0.034em;
+  line-height: 1.06;
+  margin-bottom: 1.25rem;
+}
+
+.home-page .de-lede {
+  margin-bottom: 1.25rem;
+}
+
+.reports {
+  margin-top: 3.5rem;
+}
+
+/* The reports as four cards in a row, each its name and a line on what it
+   shows, over one screenshot. The panel keeps the tallest screenshot's
+   height, so choosing a report doesn't move the page, and each screenshot
+   starts on the left edge the heading and first card share. */
+
+.report-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 2.5rem;
+}
+
+.report-cards button {
+  background: color-mix(in srgb, var(--card) 45%, transparent);
+  border: 1px solid var(--rule);
+  border-radius: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-emphasis);
+  gap: 0.4rem;
+  padding: 1.1rem 1.25rem 1.2rem;
+  text-align: left;
+}
+
+.report-cards button:hover {
+  background: var(--card);
+  border-color: var(--rule-strong);
+}
+
+.report-cards button[aria-selected="true"] {
+  background: var(--card);
+  border-color: var(--g-leaf);
+  box-shadow: 0 0 0 1px var(--g-leaf);
+}
+
+.report-name {
+  color: var(--ink);
+}
+
+.report-cards button[aria-selected="true"] .report-name {
+  color: var(--g-ink);
+}
+
+.report-note {
+  color: var(--ink-soft);
+  font-weight: var(--weight-text);
+  line-height: 1.5;
+}
+
+/* Without the tabs script every panel shows, one under the other. With it,
+   only one shows, and it sits right at the top. */
+
+.tab-panel:not([hidden]) + .tab-panel:not([hidden]) {
+  margin-top: 3rem;
+}
+
+@media (min-width: 64rem) {
+  .tab-panel {
+    min-height: 51.25rem;
+  }
+}
+
+@media (max-width: 64rem) {
+  .report-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 48rem) {
+  .report-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Import: the header, sized like Double-entry's, with uploading statements
+   under it, on the left, and the illustration of the whole import on the
+   right, from the top of the section; then categorizing them, its copy on
+   the left and the rules file on the right, after a rule. Each point is a
+   small heading over a short paragraph. */
+
+.import-intro {
+  column-gap: 3.5rem;
+  display: grid;
+  grid-template-areas:
+    "header flow"
+    "copy flow";
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-rows: auto 1fr;
+}
+
+.import-header {
+  grid-area: header;
+  margin-bottom: 2.5rem;
+}
+
+.import-intro .import-copy {
+  grid-area: copy;
+}
+
+.import-intro .import-flow {
+  align-self: center;
+  grid-area: flow;
+}
+
+.home-page .import h2 {
+  font-size: var(--text-2xl);
+  letter-spacing: -0.034em;
+  line-height: 1.06;
+  margin-bottom: 1.25rem;
+}
+
+.import-row {
+  align-items: start;
+  display: grid;
+  gap: 3.5rem;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+}
+
+.import-intro + .import-row {
+  margin-top: 6rem;
+}
+
+.home-page .import-copy h3 {
+  margin-bottom: 0.9rem;
+}
+
+.import-copy .chips {
+  margin-bottom: 1.5rem;
+}
+
+/* Points: each a small heading over a short paragraph, flush with the copy
+   above it. */
+
+.points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.points li + li {
+  margin-top: 1.1rem;
+}
+
+.home-page .points h4 {
+  color: var(--ink);
+  font-size: var(--text-base);
+  font-weight: var(--weight-emphasis);
+  line-height: 1.5;
+  margin: 0 0 0.15rem;
+}
+
+.home-page .points p {
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.import-row .shot img {
+  width: 100%;
+}
+
+@media (max-width: 64rem) {
+  .import-row {
+    gap: 2rem;
+    grid-template-columns: minmax(0, 38rem);
+  }
+
+  .import-intro {
+    grid-template-areas:
+      "header"
+      "flow"
+      "copy";
+    grid-template-columns: minmax(0, 38rem);
+  }
+
+  .import-intro .import-flow {
+    margin-bottom: 2.5rem;
+  }
+
+  .import-intro + .import-row {
+    margin-top: 4rem;
+  }
+}
+
+/* Chips: small white cards, each with its icon in the accent. */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+
+.chips li {
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: 0.6rem;
+  box-shadow: 0 1px 2px rgb(23 32 27 / 0.05);
+  color: var(--ink);
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-emphasis);
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem 0.4rem 0.6rem;
+}
+
+.chips svg {
+  fill: none;
+  height: 1rem;
+  stroke: var(--g-leaf);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+  width: 1rem;
+}
+
+/* Account pills: round, unlike the file chips, each tinted with its own
+   colour (--dot, set on the li) and led by a dot of it. */
+
+.chips.accounts li {
+  background: color-mix(in srgb, var(--dot) 10%, var(--card));
+  border-color: color-mix(in srgb, var(--dot) 22%, transparent);
+  border-radius: 999px;
+  box-shadow: none;
+  color: color-mix(in srgb, var(--dot) 55%, var(--ink));
+  padding: 0.3rem 0.85rem 0.3rem 0.7rem;
+}
+
+.chips.accounts li::before {
+  background: var(--dot);
+  border-radius: 50%;
+  content: "";
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+/* The rules file, open in a plain text editor, shown whole: a title bar
+   with the window's three dots and the file's name, monospace lines on
+   white, a wrapped line kept under its own text, and a status bar saying it's plain text. */
+
+.text-file {
+  --surface: var(--card-bar);
+
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: 0.9rem;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.text-file figcaption {
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  padding: 0.55rem 4.25rem;
+  position: relative;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.text-file .window-dots {
+  left: 0.9rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.window-dots i {
+  background: #ff5f57;
+  border-radius: 50%;
+  height: 0.65rem;
+  width: 0.65rem;
+}
+
+.window-dots i:nth-child(2) {
+  background: #febc2e;
+}
+
+.window-dots i:nth-child(3) {
+  background: #28c840;
+}
+
+.text-file pre {
+  background: var(--card);
+  color: var(--ink);
+  flex: 1;
+  font-family: var(--font-mono);
+  margin: 0;
+  padding: 0.75rem 1.25rem 0.9rem;
+  white-space: pre-wrap;
+}
+
+/* One span per line, so a wrapped rule hangs under its text, past "- ". A
+   little space between the rules keeps each one apart. */
+
+.text-file pre .line {
+  display: block;
+  padding-left: 2ch;
+  text-indent: -2ch;
+}
+
+.text-file pre .line + .line {
+  margin-top: 0.5em;
+}
+
+/* What a rule maps to stands out in the accent; its note, the why, is
+   quieter. */
+
+.text-file .arrow,
+.text-file .account {
+  color: var(--g-leaf);
+}
+
+.text-file .account {
+  font-weight: var(--weight-emphasis);
+}
+
+.text-file .note {
+  color: var(--muted);
+}
+
+.text-file .editor-status {
+  background: var(--surface);
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  display: flex;
+  font-family: var(--font-mono);
+  gap: 1.5rem;
+  justify-content: flex-end;
+  padding: 0.3rem 1rem;
+}
+
+.text-file pre {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.text-file .editor-status {
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+/* Questions: a table, each question in its own column beside its answer,
+   with a rule between the rows. On a narrow screen the question sits over
+   its answer. */
+
+.faq {
+  margin: 0;
+}
+
+.faq > div {
+  border-bottom: 1px solid var(--rule);
+  column-gap: 2.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  padding: 1.15rem 0 0.45rem;
+}
+
+.faq > div:first-child {
+  border-top: 1px solid var(--rule);
+}
+
+.faq dt {
+  color: var(--ink);
+  font-weight: var(--weight-emphasis);
+  margin-bottom: 0.75rem;
+}
+
+.faq dd {
+  margin: 0;
+}
+
+.faq dd p {
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 42rem) {
+  .faq > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .faq dt {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* The foot of the page: Questions sits on the desk, with the mug, the book
+   and the plant, anchored to the bottom right so the plant runs off the
+   screen as it does off the drawing. The drawing's top half is clear, so on
+   a wide screen the questions run beside the mug and stop
+   above the table, which starts about a third of the way up. On a narrower
+   screen the mug would sit under the text, so the drawing goes below it.
+   The footer is the last thing in the column, so the desk runs to the
+   bottom of the page. */
+
+#faq {
+  --desk-height: clamp(14rem, 34vw, 32rem);
+
+  background: url("/assets/desk.webp") right bottom / auto var(--desk-height) no-repeat var(--bg);
+  padding-bottom: calc(var(--desk-height) * 0.32 + 4rem);
+}
+
+#faq .faq {
+  max-width: 56rem;
+}
+
+.site-footer {
+  max-width: 40rem;
+  margin-top: 3rem;
+}
+
+/* Each line of the footer behind its mark, in the accent, centred on the
+   first line of its text. */
+
+.site-footer p {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.site-footer svg {
+  fill: none;
+  flex: none;
+  height: 1.1rem;
+  margin-top: calc((1lh - 1.1rem) / 2);
+  stroke: var(--g-leaf);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+  width: 1.1rem;
+}
+
+.site-footer svg.mark {
+  fill: var(--g-leaf);
+  stroke: none;
+}
+
+@media (max-width: 64rem) {
+  .home-page {
+    --gutter: 2rem;
+  }
+
+  #faq {
+    padding-bottom: calc(var(--desk-height) * 0.9 + 3rem);
+  }
+}
+
+@media (max-width: 42rem) {
+  .home-page {
+    --gutter: 1.25rem;
+  }
+
+  .header-inner {
+    gap: 0.75rem;
+    padding-block: 0.65rem;
+  }
+
+  /* The rules file's path breaks before the file's name. */
+  .text-file figcaption {
+    overflow-wrap: anywhere;
+    padding-right: 1rem;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 30rem) {
+  .home-page {
+    --text-base: 1rem;
+    line-height: 1.65;
+  }
+}

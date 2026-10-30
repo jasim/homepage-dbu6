@@ -1,0 +1,7 @@
+.wrangler
+node_modules
+dist
+.astro
+.playwright-mcp
+.claude
+tmp

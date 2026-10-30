@@ -1,0 +1,481 @@
+---
+import ImportFlow from "../components/ImportFlow.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { site } from "../lib/site";
+
+// The rules file a user ends up with after some months, shown as the text
+// file it is (custom_mappings_default.prompt): the user's own rules, added as
+// their statements turned up what only they know (who the landlord is, who
+// owes them), then after a blank line a few of the starter chart's notes.
+// Each is written as the kind of transaction, then an arrow, then its
+// account, so a skimmer reads it as a mapping. The user's rules are illustrative, not from the demo books.
+// One rule per line; the editor wraps them, and an empty string is a blank line.
+const rulesFile = "custom_mappings_default.prompt";
+const rules = [
+  "- IMPS of 30,000–35,000 to A/c XX4417 in the first week of the month → Rent",
+  "- NEFT from ACME TECHNOLOGIES on the last working day → Salary; anything else from them → Reimbursements",
+  "- UPI from Arjun → Loan to Arjun (he's paying back what I lent him in March)",
+  "- Amazon under 1,000 → Household Supplies; over that, ask me (it's usually a gift or a gadget)",
+  "",
+  "- Meals from food delivery apps → Food Delivery",
+  "- Restaurants, cafés, bakeries and bars → Dining Out",
+  "- Bank and card fees, and the tax on them → Bank Charges",
+];
+// A rule's parts, for highlighting: an arrow and the account it maps to
+// (up to a ";", a "(" or the end), a note in parentheses, and plain text
+// between them.
+type RulePart = { kind: "text" | "account" | "note"; text: string };
+function ruleParts(rule: string): RulePart[] {
+  const parts: RulePart[] = [];
+  let last = 0;
+  for (const match of rule.matchAll(/\([^)]*\)|→ [^;(]*[^;(\s]/g)) {
+    if (match.index > last) parts.push({ kind: "text", text: rule.slice(last, match.index) });
+    parts.push({ kind: match[0].startsWith("(") ? "note" : "account", text: match[0] });
+    last = match.index + match[0].length;
+  }
+  if (last < rule.length) parts.push({ kind: "text", text: rule.slice(last) });
+  return parts;
+}
+---
+<SiteLayout title={site.title} description={site.description} path="/">
+  <!--
+    Flow: each step answers the question the last one raises, and the H2s
+    alone tell the story.
+    1. Hero: what it is, in the headline, and what you do with it, under it;
+       Getting Started with the command that installs it beside it; and the
+       Overview it gives you, with the demo (in a lightbox) played from it.
+       The install command, the app at localhost, and the window bars' paths
+       in ~/my-books show that the books are local.
+    2. Designed for AI power users (#agent): in one column, the agents it
+       works with, what you can ask of yours, two questions asked of it (the
+       answer to the one chosen, with the questions under it to switch
+       between them), then why your books suit an agent.
+    3. Double-entry bookkeeping (#trust, #reports): the system professional
+       accountants use, and the whole picture it gives you, in four reports:
+       income and expenses, the balance sheet, net worth over time, and
+       every account's ledger, as four cards over one screenshot.
+    4. Import statements and categorize transactions automatically (#how):
+       the header, lede and uploading statements beside an illustration of
+       the whole import, then categorizing them beside the rules file.
+    5. Questions (#faq), a table of questions and answers on the desk
+       engraving.
+
+    Designed for AI power users sits on a white band, so the move from
+    the hero's centred copy to the left-aligned chapters reads as a new
+    chapter; from Double-entry on, sections alternate between a soft band
+    and the page. The look (the desk surface, the cards, the engraving
+    at the foot) is homepage.css's.
+
+    Voice: calm, positive, and moving forward. Say what the reader gets and
+    does, not what goes wrong without it.
+
+    Screenshots live in public/assets/. Each img alt is a description, then
+    "Capture: …" with everything needed to re-take it. Keep file names when
+    re-taking them.
+
+    App screens: a throwaway project linked to the dbu6 checkout ("@dbu6/app":
+    "link:…/dbu6", as DEVELOPMENT.md describes), `dbu6 seed` run on 2026-10-27,
+    signed in as the seed's demo user; viewport 1440×900 @2x, light; each clip
+    box is in CSS pixels. Re-take them when the app or the sample data changes.
+
+    Agent screens: frames of the real Claude Code sessions recorded for the
+    video, in dbu6-videos/teaser2/screen-recordings/ (see its
+    screen-recordings.md), cropped to the answer. They don't depend on dbu6's
+    screens, only on the demo books the sessions read.
+  -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="site-name" href="/">dbu6</a>
+      <div class="header-links">
+        <a href="/docs/">Documentation</a>
+        <a href={site.github}><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section hero">
+      <div class="container">
+        <div class="hero-copy">
+          <!-- The headline names it; the subtitle under it says what you do
+               with it. -->
+          <h1>AI workspace for your personal finance</h1>
+          <p class="hero-subtitle">Track your income and expense, see your net worth, and work fully agentically. Import statements from any bank or card as <span class="nowrap">double-entry</span> books into a local SQLite database.</p>
+          <!-- Getting Started, with the command that makes a books folder
+               (the Setup guide's first step) beside it, as you'd type it.
+               Copy shows only with the script. -->
+          <div class="actions">
+            <a class="btn-primary" href="/docs/">Getting Started</a>
+            <div class="install-command">
+              <code><span class="prompt" aria-hidden="true">$</span> npm init @dbu6 my-books</code>
+              <button type="button" class="copy" data-copy="npm init @dbu6 my-books" aria-label="Copy the command" hidden><svg class="icon-copy" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z M10.5 5.5v-3h-8v8h3"/></svg><svg class="icon-copied" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <!-- The app in a browser window at the address `dbu6 dev` serves it
+             on, so the page shows where it runs. Watch the demo sits on it,
+             as a play button over a video's first frame.
+             Watch the demo is hidden until there's a better video; to bring
+             it back, uncomment the link below. The demo dialog and its
+             script stay in place, so nothing else needs to change. -->
+        <figure class="shot showcase" style="--shot-width: 1020px">
+          <div class="browser">
+            <div class="browser-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="address">localhost:2345</span></div>
+            {/* <a class="play" href="https://www.youtube.com/watch?v=0PsCb0-01dI" data-demo><span class="play-mark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9.5-5.5z"/></svg></span>Watch the demo</a> */}
+            <a href="/assets/overview.png"><img src="/assets/overview.png" srcset="/assets/overview.png 2x" alt="dbu6's Overview for September 2026: drafts waiting for review; income, spending, savings and savings rate, each with the months before it; spending by category with each category's months before it; net worth as assets less liabilities; and each account's balance and the date its books run to. Capture: seed to 2026-11-01; clock 2026-11-01; open /?month=2026-09; clip x316 y0 w1020 h745."></a>
+          </div>
+        </figure>
+      </div>
+
+      <!-- The demo, opened over the page by the Watch the demo button. The
+           player loads only when it opens, and unloads when it closes. -->
+      <dialog class="demo-dialog" id="demo" aria-label="dbu6 demo">
+        <form method="dialog"><button type="submit" class="dialog-close">Close</button></form>
+        <figure class="video">
+          <div class="frame">
+            <iframe title="dbu6 demo" data-src="https://www.youtube.com/embed/0PsCb0-01dI?autoplay=1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+        </figure>
+      </dialog>
+
+      <!-- A screenshot, opened over the page by clicking it and fitted to
+           the lightbox. -->
+      <dialog class="shot-dialog" id="screenshot" aria-label="Screenshot">
+        <form method="dialog"><button type="submit" class="dialog-close">Close</button></form>
+        <div class="shot-view"><img alt=""></div>
+      </dialog>
+    </section>
+
+    <section class="section" id="agent">
+      <div class="container">
+        <div class="agent-copy">
+          <h2>Designed for AI power users</h2>
+          <!-- The marks are Simple Icons' Claude and OpenAI paths; Pi has no
+               mark of its own, so it gets the letter. -->
+          <ul class="chips agent-chips" aria-label="Coding agents">
+            <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg>Claude Code</li>
+            <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>Codex</li>
+            <li><svg class="pi" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11 M5.75 4.5v9 M10.25 4.5v7.25a1.75 1.75 0 0 0 3 1.25"/></svg>Pi</li>
+          </ul>
+          <p class="agent-lede">You can run dbu6 entirely from your coding agent, without ever opening the app. Ask it to import your statements, get financial projections, or create new reports and features.</p>
+          <!-- Each question is word for word what was typed to the agent in the
+               take its answer is from (teaser2's screen recordings), and the
+               session title is the one the app gave it. Each card is drawn as
+               that session's window: the title bar (with the books folder the
+               session runs in at its right), the question in the grey
+               bubble the app shows what you typed in, and the answer under it,
+               cropped from the recording to the answer alone.
+               Under the answers, the questions switch between them, like a
+               caption with a dot for each: each a short form of what was
+               asked, and one answer shows at a time. -->
+          <div class="asks" data-tabs>
+            <figure class="shot ask" role="tabpanel" id="panel-subscriptions" aria-labelledby="tab-subscriptions">
+              <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Recurring subscriptions and spending<span class="ask-folder">~/my-books</span></span><span class="ask-question">List all my recurring subscriptions and how much I've paid for them</span></figcaption>
+              <a href="/assets/agent-subscriptions-answer.png"><img src="/assets/agent-subscriptions-answer.png" srcset="/assets/agent-subscriptions-answer.png 2x" alt="The agent's answer: you have 6 subscriptions and paid 38,748 for them from September 2025 to August 2026, in a table of each subscription, how often it charges, each charge, the number of charges and the total paid. Capture: frame at 85 s of subscriptions.mov, cropped x780 y740 w2270 h940 (device px), the scroll-down button painted out."></a>
+            </figure>
+            <figure class="shot ask" role="tabpanel" id="panel-afford" aria-labelledby="tab-afford">
+              <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Bengaluru 2BHK affordability<span class="ask-folder">~/my-books</span></span><span class="ask-question">We're looking at a 2BHK in Bengaluru for about 90 lakh. Can we afford it? And if not, what could we afford, and when?</span></figcaption>
+              <a href="/assets/agent-afford-answer.png"><img src="/assets/agent-afford-answer.png" srcset="/assets/agent-afford-answer.png 2x" alt="The agent's answer: short answer, not yet; the 90 lakh flat becomes doable around mid-2029 using EPF or late 2030 without, and 30 to 35 lakh is realistic today; the figures are from the books for September 2025 to August 2026; and what a 90 lakh flat needs, cash up front of about 37 lakh and an EMI of about 58,600 a month. Capture: frame at 171 s of afford-flat-2.mov, cropped x780 y860 w2270 h810 (device px), the scroll-down button painted out."></a>
+            </figure>
+            <div class="ask-cards" role="tablist" aria-label="Questions asked of the agent">
+              <button type="button" role="tab" id="tab-subscriptions" aria-controls="panel-subscriptions" aria-selected="true">
+                <span class="report-name">List all my recurring subscriptions</span>
+              </button>
+              <button type="button" role="tab" id="tab-afford" aria-controls="panel-afford" aria-selected="false">
+                <span class="report-name">Is buying an apartment now a good idea?</span>
+              </button>
+            </div>
+          </div>
+          <p>
+              dbu6 was built from scratch to be agent-native: all your data sits in a single .sqlite file, an AGENTS.md file documents double-entry bookkeeping conventions, and your coding agent calls the exact same internal APIs that power the web app.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section double-entry" id="trust">
+      <div class="container">
+        <div class="de-header">
+          <h2>Double-entry bookkeeping</h2>
+          <p class="de-lede">
+            dbu6 is a complete accounting package, not just an expense tracker. So you get the same kind of insights and reports that were once limited to businesses employing professional accountants.
+          </p>
+        </div>
+
+        <div class="reports" id="reports" data-tabs>
+          <!-- Each report is a card: its name and what it shows. The name
+               alone labels the tab; the note describes it. -->
+          <div class="report-cards" role="tablist" aria-label="Reports">
+            <button type="button" role="tab" id="tab-income-expenses" aria-controls="panel-income-expenses" aria-selected="true" aria-labelledby="name-income-expenses" aria-describedby="note-income-expenses">
+              <span class="report-name" id="name-income-expenses">Income and expenses</span>
+              <span class="report-note" id="note-income-expenses">Across all banks and cards</span>
+            </button>
+            <button type="button" role="tab" id="tab-balance-sheet" aria-controls="panel-balance-sheet" aria-selected="false" aria-labelledby="name-balance-sheet" aria-describedby="note-balance-sheet">
+              <span class="report-name" id="name-balance-sheet">Balance sheet</span>
+              <span class="report-note" id="note-balance-sheet">Complete financial position</span>
+            </button>
+            <button type="button" role="tab" id="tab-net-worth" aria-controls="panel-net-worth" aria-selected="false" aria-labelledby="name-net-worth" aria-describedby="note-net-worth">
+              <span class="report-name" id="name-net-worth">Net worth over time</span>
+              <span class="report-note" id="note-net-worth">See how fast your capital is growing</span>
+            </button>
+            <button type="button" role="tab" id="tab-ledger" aria-controls="panel-ledger" aria-selected="false" aria-labelledby="name-ledger" aria-describedby="note-ledger">
+              <span class="report-name" id="name-ledger">Account ledgers</span>
+              <span class="report-note" id="note-ledger">Full transaction history</span>
+            </button>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-income-expenses" aria-labelledby="tab-income-expenses">
+            <figure class="shot" style="--shot-width: 1200px">
+              <a href="/assets/income-expenses.png"><img src="/assets/income-expenses.png" srcset="/assets/income-expenses.png 2x" alt="dbu6's Income and Expenses report for November 2025 to October 2026: income, spending and the amount saved; income and spending by category with each one's share; a month-by-month chart of income against spending; and the largest spending entries beside it. Capture: seed to 2026-11-01; clock 2026-11-01; open /reports/income-expenses?from_date=2025-11-01&to_date=2026-10-31; clip x228 y0 w1200 h810."></a>
+            </figure>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-balance-sheet" aria-labelledby="tab-balance-sheet">
+            <figure class="shot" style="--shot-width: 1440px">
+              <a href="/assets/balance-sheet.png"><img src="/assets/balance-sheet.png" srcset="/assets/balance-sheet.png 2x" alt="dbu6's Balance Sheet as of today, beside the sidebar: what you own, investments (EPF, mutual funds, PPF, stocks, NPS, gold), bank accounts, deposits and cash as a tree with totals, then what you owe, starting with loans. Capture: open /reports/balance-sheet?to_date=2026-09-30, collapse Mutual Funds, Stocks, Bank Accounts and Deposits; locale en-IN; clip x0 y0 w1440 h720."></a>
+            </figure>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-net-worth" aria-labelledby="tab-net-worth">
+            <figure class="shot" style="--shot-width: 1440px">
+              <a href="/assets/net-worth.png"><img src="/assets/net-worth.png" srcset="/assets/net-worth.png 2x" alt="dbu6's Net Worth Over Time report for all time, beside the sidebar: one row per month with assets, liabilities, net worth and the change from the month before, and the current totals at the bottom. Capture: open /reports/net-worth; locale en-IN; clip x0 y0 w1440 h720."></a>
+            </figure>
+          </div>
+
+          <div class="tab-panel" role="tabpanel" id="panel-ledger" aria-labelledby="tab-ledger">
+            <figure class="shot" style="--shot-width: 1440px">
+              <a href="/assets/ledger-groceries.png"><img src="/assets/ledger-groceries.png" srcset="/assets/ledger-groceries.png 2x" alt="Account ledger for Groceries from October 2025 to September 2026, beside the sidebar: each spend with its date, the bank, card or cash it was paid from, its narration, amount and running balance. Capture: open /reports/account-ledger?account_id=259&from_date=2025-10-01&to_date=2026-09-30 (259 is Groceries in the seed; look it up again after a re-seed); locale en-IN; clip x0 y0 w1440 h720."></a>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section import" id="how">
+      <div class="container">
+        <!-- The heading, then uploading statements under it, beside the
+             illustration of the whole import, from statement to review; then
+             categorizing them, beside the rules file. Each part is a heading,
+             what it takes in (file chips) or sorts into (round account pills,
+             each with its colour dot), and its points, each a small heading
+             over a sentence or two. -->
+        <div class="import-intro">
+          <div class="import-header">
+            <h2>Import statements and categorize transactions automatically</h2>
+            <p class="lede">Skip manual data entry and brittle third-party bank syncs. Upload your monthly bank and card statements directly to dbu6, and let your coding agent parse the files and map every transaction to the right account in your books.</p>
+          </div>
+
+          <div class="import-copy">
+            <h3>Upload statements from any bank, in any format</h3>
+            <ul class="chips" aria-label="Statement formats">
+              {["PDF", "Excel", "CSV", "TSV", "Text"].map((format) => (
+                <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z M9.5 1.5V5H13"/></svg>{format}</li>
+              ))}
+            </ul>
+            <ul class="points">
+              <li><h4>Generate bank parsers automatically</h4><p>The first time you upload an unfamiliar statement format, your coding agent writes and saves a local parser for that bank. Future statements parse instantly on your machine.</p></li>
+              <li><h4>Review imports as drafts first</h4><p>New imports land in a staging table as drafts, so you can verify everything before committing transactions to your books.</p></li>
+            </ul>
+          </div>
+          <ImportFlow />
+        </div>
+
+        <div class="import-row">
+          <div class="import-copy">
+            <h3>Categorize your transactions automatically</h3>
+            <ul class="chips accounts" aria-label="Some of the accounts in a chart of accounts">
+              <li style="--dot: #2b6a4b">Groceries</li>
+              <li style="--dot: #4f5b9c">Subscriptions</li>
+              <li style="--dot: #2f7480">Hotels</li>
+              <li style="--dot: #c2410c">Dining Out</li>
+            </ul>
+            <ul class="points">
+              <li><h4>Exact string matching</h4><p>Transactions are classified by first applying local string-matching rules that you define. For example, you can write a rule to match any transaction containing <code>"ANTHROPIC"</code> to <code>SaaS Expenses</code>.</p></li>
+              <li><h4>Powerful plain English rules</h4><p>For everything else, your coding agent evaluates the transaction against your plain-English instructions. If there is any ambiguity, the agent asks you how to categorize it.</p></li>
+              <li><h4>Grow your own system</h4><p>When you answer a question about a recurring or generalizable expense, your coding agent writes a new rule to your config. Over time, your ruleset grows tailored to your finances—and the agent rarely needs your intervention.</p></li>
+            </ul>
+          </div>
+          <!-- The rules file open in a plain text editor: the window's
+               title bar with the file's name, the lines with each
+               rule's arrow and account in the accent and its note in grey,
+               and a status bar saying what kind of file it is. -->
+          <figure class="text-file" aria-label="Sample categorization rules">
+            <figcaption><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>~/my-books/user-config/<wbr>{rulesFile}</figcaption>
+            <pre>{rules.map((rule) => (
+              <span class="line">{rule ? ruleParts(rule).map((part) =>
+                part.kind === "account" ? <><span class="arrow">→</span> <span class="account">{part.text.slice(2)}</span></>
+                : part.kind === "note" ? <span class="note">{part.text}</span>
+                : part.text
+              ) : " "}</span>
+            ))}</pre>
+            <div class="editor-status" aria-hidden="true"><span>Plain Text</span></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2>Questions</h2>
+        </div>
+        <!-- A table of questions and answers: each question beside its
+             answer, and over it on a narrow screen. -->
+        <dl class="faq">
+          <div>
+            <dt>How much work is it each month?</dt>
+            <dd>
+              <p>Very little. You don't enter transactions by hand. Once a month, you get your bank and card statements and point your coding agent at them (or upload them in the app). You may need to answer a few questions about transactions the agent can't confidently categorize.</p>
+              <p>dbu6 also checks your books for problems such as duplicate entries and balance mismatches. Your coding agent can fix any of them in one click.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>What do I need to run it?</dt>
+            <dd>
+              <p>A Mac or Linux machine with Node.js 22.18 or newer, <code>uv</code> and <code>poppler</code> for reading PDF statements, and Claude Code, Codex, or Pi. See the <a href="/docs/">Setup guide</a> for details.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>Where does my data live, and is it private?</dt>
+            <dd>
+              <p>Your books are a SQLite file in a folder on your computer, and dbu6 has no hosted service or cloud sync. Importing statements and applying your text rules happen locally, without the agent.</p>
+              <p>However, when your coding agent reads your transactions (to write a parser for a new bank statement, or to categorize transactions, or to answer a question), that text and related data goes to your model provider under your plan.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>What does it cost?</dt>
+            <dd>
+              <p>dbu6 is free and open source (MIT). The agent runs on your local Claude Code, Codex, or Pi CLI.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>Will it work with my bank?</dt>
+            <dd>
+              <p>Yes. For any bank or card, your agent writes a reader from a sample statement and tests it. It's saved in your folder and used again on every later import.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>Do I need to know accounting?</dt>
+            <dd>
+              <p>No. Thanks to AI, you can now get the reporting power of double-entry bookkeeping without any of the learning curve.</p>
+              <p>The only complexity with double-entry accounting was that you had to understand how to map a transaction into its style - which account to debit, which to credit, and how to structure the entries. All of these are now handled in dbu6 with the help of your coding agent. You can even write your transactions in freeform English, and your coding agent will use dbu6's guidance to create them accurately.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>Can I export my books?</dt>
+            <dd>
+              <p>Yes. You can export your entire books to <a href="https://hledger.org/">hledger</a> in one click. They are plain-text files that are extremely portable and are supported by the excellent hledger ecosystem.</p>
+            </dd>
+          </div>
+        </dl>
+        <!-- Each line has its mark: a scale for the license, GitHub's own
+             mark, and a person for the maintainer. -->
+        <footer class="site-footer">
+          <p>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12 M5 14h6 M3 4.5h10 M3 4.5 1.5 9a1.5 1.5 0 0 0 3 0z M13 4.5 11.5 9a1.5 1.5 0 0 0 3 0z"/></svg>
+            <span>dbu6 is <a href={site.license}>MIT-licensed</a>, free and open source, and published on npm as
+            <a href={site.npm}>@dbu6</a></span>
+          </p>
+          <p><svg class="mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span><a href={site.github}>https://github.com/jasim/dbu6</a></span></p>
+          <p><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M2.5 14.5a5.5 5.5 0 0 1 11 0"/></svg><span>Built and maintained by <a href="https://x.com/jasim_ab">Jasim</a></span></p>
+        </footer>
+      </div>
+    </section>
+
+  </main>
+</SiteLayout>
+
+<script>
+  (function () {
+    // Without this script Watch the demo is a plain link to the video on
+    // YouTube. With it, the video plays in a lightbox, and closing the
+    // lightbox (Close, Escape, or a click outside the video) unloads it.
+    var demo = document.getElementById('demo');
+    var player = demo.querySelector('iframe');
+    document.querySelectorAll('[data-demo]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        player.src = player.getAttribute('data-src');
+        demo.showModal();
+      });
+    });
+    demo.addEventListener('click', function (event) {
+      if (event.target === demo) demo.close();
+    });
+    demo.addEventListener('close', function () {
+      player.src = 'about:blank';
+    });
+
+    // Without this script a screenshot is a plain link to its image. With it,
+    // the image opens in a lightbox, fitted to it. Close, Escape, a click
+    // outside the image, or Back closes the lightbox.
+    var lightbox = document.getElementById('screenshot');
+    var view = lightbox.querySelector('.shot-view');
+    var full = view.querySelector('img');
+    document.querySelectorAll('.shot a[href$=".png"]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        full.alt = link.querySelector('img').alt;
+        full.src = link.getAttribute('href');
+        lightbox.showModal();
+        history.pushState({ screenshot: true }, '');
+      });
+    });
+    lightbox.addEventListener('click', function (event) {
+      if (event.target === lightbox || event.target === view) lightbox.close();
+    });
+    lightbox.addEventListener('close', function () {
+      if (history.state && history.state.screenshot) history.back();
+    });
+    window.addEventListener('popstate', function () {
+      if (lightbox.open) lightbox.close();
+    });
+
+    // Without this script the install command has no Copy button.
+    document.querySelectorAll('[data-copy]').forEach(function (button) {
+      if (!navigator.clipboard) return;
+      button.hidden = false;
+      button.addEventListener('click', function () {
+        navigator.clipboard.writeText(button.getAttribute('data-copy')).then(function () {
+          button.classList.add('copied');
+          button.setAttribute('aria-label', 'Copied');
+          setTimeout(function () {
+            button.classList.remove('copied');
+            button.setAttribute('aria-label', 'Copy the command');
+          }, 1500);
+        });
+      });
+    });
+
+    // Without this script every report panel and every answer shows, one
+    // under the other.
+    document.querySelectorAll('[data-tabs]').forEach(function (tabs) {
+      tabs.setAttribute('data-tabs', 'ready');
+      var buttons = Array.prototype.slice.call(tabs.querySelectorAll('[role=tab]'));
+      function select(selected) {
+        buttons.forEach(function (button) {
+          var on = button === selected;
+          button.setAttribute('aria-selected', String(on));
+          button.tabIndex = on ? 0 : -1;
+          document.getElementById(button.getAttribute('aria-controls')).hidden = !on;
+        });
+      }
+      buttons.forEach(function (button, i) {
+        button.addEventListener('click', function () { select(button); });
+        button.addEventListener('keydown', function (event) {
+          // The cards run across on a wide screen and stack on a narrow
+          // one, so both pairs of arrows move between them.
+          var step = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1
+            : event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1 : 0;
+          if (!step) return;
+          var next = buttons[(i + step + buttons.length) % buttons.length];
+          select(next);
+          next.focus();
+        });
+      });
+      select(buttons[0]);
+    });
+  })();
+</script>

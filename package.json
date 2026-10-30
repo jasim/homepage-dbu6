@@ -1,0 +1,21 @@
+{
+  "name": "dbu6-home",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "description": "Website for dbu6.com",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.38.4",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.1.9",
+    "nuaj-agent-docs": "github:jasim/nuaj-agent-docs#cc83573a0c18421f386f28c135223747ee5b1d3b",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^4.3.0"
+  }
+}

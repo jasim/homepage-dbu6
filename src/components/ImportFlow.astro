@@ -1,0 +1,361 @@
+---
+// What happens to a statement on import, drawn in the desk engraving's ink:
+// the PDF goes in; if dbu6 has a parser for that bank it reads the
+// transactions straight away, and if not the agent writes one first; then
+// the transactions are categorized and land as drafts for review.
+// Each paper is white with a hatched shadow, like the engraving's objects;
+// the ink is currentColor (--g-ink), and the colour is the accounts' dots
+// (the same as the chips beside the next row), the Draft stamp, and the
+// agent's work: the columns it found on the statement, and the names it
+// gave them in the parser, each in the column's colour. The parser is saved
+// and hangs on the question it now answers, for the bank's next statement.
+const rows = [
+  { date: "02 SEP", payee: "SWIGGY", amount: "−486", account: "Dining Out", dot: "#c2410c" },
+  { date: "05 SEP", payee: "NETFLIX", amount: "−649", account: "Subscriptions", dot: "#4f5b9c" },
+  { date: "07 SEP", payee: "BIGBASKET", amount: "−2,310", account: "Groceries", dot: "#2b6a4b" },
+  { date: "30 SEP", payee: "ACME TECH", amount: "+95,000", account: "Salary", dot: "#2f7480" },
+];
+// The statement's lines, as the engraving would draw print too small to
+// read: a date, a narration of some length, and an amount.
+const statementLines = [44, 30, 40, 26, 36, 42];
+// The columns the agent found on the statement, each in its own colour.
+const columns = [
+  { name: "DATE", x: 11, width: 28, colour: "#2f7480" },
+  { name: "PAYEE", x: 42, width: 50, colour: "#4f5b9c" },
+  { name: "AMOUNT", x: 102, width: 38, colour: "#c2410c" },
+];
+const [date, payee, amount] = columns.map((column) => column.colour);
+// The parser, as it would read: each line its runs of text, a run's colour
+// if it names a column, and the character it starts at when it's aligned.
+const charWidth = 4.64; // the mono font at 7.5px
+type Run = { text: string; colour?: string; at?: number };
+const code: { x: number; runs: Run[] }[] = [
+  { x: 12, runs: [{ text: "def parse(line):" }] },
+  { x: 20, runs: [{ text: "date", colour: date }, { text: "= line[0:9]", at: 7 }] },
+  { x: 20, runs: [{ text: "payee", colour: payee }, { text: "= line[10:42]", at: 7 }] },
+  { x: 20, runs: [{ text: "amount", colour: amount }, { text: "= line[-12:]", at: 7 }] },
+  { x: 20, runs: [{ text: "return " }, { text: "date", colour: date }, { text: ", " }, { text: "payee", colour: payee }, { text: ", " }, { text: "amount", colour: amount }] },
+];
+const codeLines = code.map((line, i) => ({
+  ...line,
+  runs: line.runs.map((run) => ({ ...run, x: run.at === undefined ? undefined : line.x + run.at * charWidth })),
+  y: 48 + i * 16,
+}));
+---
+<figure class="import-flow">
+  <svg viewBox="0 0 600 600" role="img" aria-labelledby="import-flow-title">
+    <title id="import-flow-title">A PDF statement goes in. The first time dbu6 sees a statement from a bank, it has no parser for it, so your coding agent reads the statement, finds its date, payee and amount columns, and writes a parser that reads them, which dbu6 saves for that bank's next statements. The transactions are then categorized into accounts such as Dining Out, Subscriptions and Groceries, and land as drafts for you to review.</title>
+    <defs>
+      <pattern id="flow-hatch" width="3.5" height="3.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="3.5" stroke="currentColor" stroke-width="0.9" />
+      </pattern>
+      <pattern id="flow-hatch-light" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
+        <line x1="0" y1="0" x2="0" y2="4" stroke="currentColor" stroke-width="0.5" />
+      </pattern>
+      <pattern id="flow-stipple" width="5" height="5" patternUnits="userSpaceOnUse">
+        <circle cx="1.2" cy="1.2" r="0.6" fill="currentColor" />
+        <circle cx="3.7" cy="3.6" r="0.45" fill="currentColor" />
+      </pattern>
+      <marker id="flow-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+        <path d="M1 1 L8.5 5 L1 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+      </marker>
+    </defs>
+
+    <!-- The statement, with the columns the agent found on it -->
+    <g transform="translate(40 30) rotate(-3)">
+      <path class="shadow" d="M6 7 H130 L156 33 V197 H6 Z" />
+      <path class="paper" d="M0 0 H124 L150 26 V190 H0 Z" />
+      <path class="fold" d="M124 0 V26 H150" />
+      <rect x="14" y="16" width="16" height="16" fill="url(#flow-hatch)" class="ink-edge" />
+      <text x="38" y="26" class="flow-mono flow-tiny">STATEMENT</text>
+      <text x="118" y="26" class="flow-mono flow-tiny" text-anchor="end">SEP</text>
+      <line x1="38" y1="33" x2="96" y2="33" class="hair" />
+      {statementLines.map((width, i) => (
+        <g class="print">
+          <line x1="14" y1={62 + i * 16} x2="36" y2={62 + i * 16} />
+          <line x1="44" y1={62 + i * 16} x2={44 + width} y2={62 + i * 16} />
+          <line x1={116 - (i % 3) * 6} y1={62 + i * 16} x2="136" y2={62 + i * 16} />
+        </g>
+      ))}
+      {columns.map((column) => (
+        <g style={`color: ${column.colour}`}>
+          <rect x={column.x} y="55" width={column.width} height="94" rx="2" class="flow-column" />
+          <path d={`M${column.x} 53 V49 H${column.x + column.width} V53`} class="flow-bracket" />
+          <text x={column.x + column.width / 2} y="45" class="flow-mono flow-column-name" text-anchor="middle">{column.name}</text>
+        </g>
+      ))}
+      <rect x="14" y="160" width="34" height="16" rx="2" fill="currentColor" />
+      <text x="31" y="171.5" class="flow-mono flow-tiny flow-on-ink" text-anchor="middle">PDF</text>
+    </g>
+    <text x="118" y="252" class="flow-label" text-anchor="middle">STATEMENT</text>
+
+    <!-- Does dbu6 have a parser for this bank? The one the agent wrote
+         hangs here, for the next statement. -->
+    <path class="flow-line" d="M202 126 C226 120 248 128 268 128" marker-end="url(#flow-head)" />
+    <path class="shadow" d="M305 107 L331 133 L305 159 L279 133 Z" />
+    <path class="paper" d="M300 102 L326 128 L300 154 L274 128 Z" />
+    <path class="hair" d="M300 109 L319 128 L300 147 L281 128 Z" />
+    <text x="300" y="136" class="flow-question" text-anchor="middle">?</text>
+    <text x="300" y="70" class="flow-label" text-anchor="middle">PARSER FOR</text>
+    <text x="300" y="86" class="flow-label" text-anchor="middle">THIS BANK?</text>
+    <line x1="318" y1="146" x2="322" y2="152" class="hair" />
+    <rect x="312" y="152" width="46" height="14" rx="2" class="paper" />
+    <text x="335" y="162" class="flow-mono flow-tiny" text-anchor="middle">hdfc.py</text>
+
+    <!-- No: the agent writes one, with a line for each column -->
+    <path class="flow-line flow-branch" d="M330 128 C360 128 388 120 418 120" marker-end="url(#flow-head)" />
+    <text x="372" y="114" class="flow-answer" text-anchor="middle">no</text>
+    <g transform="translate(424 36) rotate(2.5)">
+      <path class="shadow" d="M6 7 H134 L158 31 V171 H6 Z" />
+      <path class="paper" d="M0 0 H128 L152 24 V164 H0 Z" />
+      <path class="fold" d="M128 0 V24 H152" />
+      <text x="12" y="18" class="flow-mono flow-tiny">hdfc.py</text>
+      <text x="122" y="18" class="flow-mono flow-tiny flow-accent" text-anchor="end">saved ✓</text>
+      <line x1="12" y1="25" x2="58" y2="25" class="hair" />
+      {codeLines.map((line) => (
+        <!-- On one line: the code keeps its spaces, so any between the tags would show -->
+        <text x={line.x} y={line.y} class="flow-mono flow-code">{line.runs.map((run) => <tspan x={run.x} fill={run.colour}>{run.text}</tspan>)}</text>
+      ))}
+    </g>
+    <text x="500" y="226" class="flow-label" text-anchor="middle">AGENT WRITES</text>
+    <text x="500" y="242" class="flow-label" text-anchor="middle">A PARSER</text>
+    <path class="flow-line flow-branch" d="M492 252 C486 266 360 250 306 254" />
+
+    <!-- Yes: straight on to the transactions -->
+    <path class="flow-line" d="M300 156 V264" marker-end="url(#flow-head)" />
+    <text x="290" y="214" class="flow-answer" text-anchor="end">yes</text>
+
+    <!-- The transactions -->
+    <g transform="translate(170 272) rotate(-1.2)">
+      <rect x="5" y="6" width="260" height="110" class="shadow" />
+      <rect width="260" height="110" class="paper" />
+      <text x="12" y="16" class="flow-mono flow-tiny flow-muted">DATE</text>
+      <text x="62" y="16" class="flow-mono flow-tiny flow-muted">PAYEE</text>
+      <text x="248" y="16" class="flow-mono flow-tiny flow-muted" text-anchor="end">AMOUNT</text>
+      <line x1="0" y1="22" x2="260" y2="22" class="hair" />
+      <line x1="0" y1="25" x2="260" y2="25" class="hair" />
+      <line x1="54" y1="22" x2="54" y2="110" class="hair" />
+      {rows.map((row, i) => (
+        <g>
+          <text x="12" y={42 + i * 20} class="flow-mono flow-row">{row.date}</text>
+          <text x="62" y={42 + i * 20} class="flow-mono flow-row">{row.payee}</text>
+          <text x="248" y={42 + i * 20} class="flow-mono flow-row" text-anchor="end">{row.amount}</text>
+          {i < rows.length - 1 && <line x1="0" y1={47 + i * 20} x2="260" y2={47 + i * 20} class="hair flow-faint" />}
+        </g>
+      ))}
+    </g>
+    <text x="300" y="404" class="flow-label" text-anchor="middle">TRANSACTIONS</text>
+
+    <!-- Categorized -->
+    <path class="flow-line" d="M184 388 C156 398 150 414 152 432" marker-end="url(#flow-head)" />
+    <g transform="translate(22 442) rotate(1.2)">
+      <rect x="5" y="6" width="268" height="112" class="shadow" />
+      <rect width="268" height="112" class="paper" />
+      {rows.map((row, i) => (
+        <g>
+          <text x="12" y={26 + i * 24} class="flow-mono flow-row">{row.payee}</text>
+          <rect x="128" y={13 + i * 24} width="128" height="18" rx="9" class="paper" />
+          <circle cx="140" cy={22 + i * 24} r="3.5" fill={row.dot} />
+          <text x="150" y={26 + i * 24} class="flow-account">{row.account}</text>
+        </g>
+      ))}
+    </g>
+    <text x="158" y="584" class="flow-label" text-anchor="middle">CATEGORIZED</text>
+
+    <!-- Review: drafts, checked before they go into the books -->
+    <path class="flow-line" d="M298 498 C306 495 314 495 322 497" marker-end="url(#flow-head)" />
+    <g transform="translate(330 440) rotate(-1)">
+      <rect x="5" y="6" width="250" height="112" class="shadow" />
+      <rect width="250" height="112" class="paper" />
+      {rows.map((row, i) => (
+        <g>
+          <text x="12" y={26 + i * 24} class="flow-mono flow-row">{row.payee}</text>
+          <text x="206" y={26 + i * 24} class="flow-mono flow-row" text-anchor="end">{row.amount}</text>
+          <path d={`M222 ${21 + i * 24} l4 4.5 l8 -9`} class="flow-check" />
+        </g>
+      ))}
+      <g transform="translate(116 58) rotate(-11)" class="flow-stamp">
+        <rect x="-42" y="-15" width="84" height="30" rx="3" />
+        <rect x="-38" y="-11" width="76" height="22" rx="2" class="flow-stamp-inner" />
+        <text x="0" y="6" text-anchor="middle">DRAFT</text>
+      </g>
+    </g>
+    <text x="456" y="584" class="flow-label" text-anchor="middle">REVIEW</text>
+  </svg>
+</figure>
+
+<style>
+  .import-flow {
+    color: var(--g-ink);
+    margin: 0;
+    width: 100%;
+  }
+
+  .import-flow svg {
+    display: block;
+    height: auto;
+    max-width: 36rem;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .paper {
+    fill: #fff;
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+  }
+
+  .shadow {
+    fill: url(#flow-hatch-light);
+  }
+
+  .fold {
+    fill: url(#flow-stipple);
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.2;
+  }
+
+  .ink-edge {
+    stroke: currentColor;
+    stroke-width: 1;
+  }
+
+  .hair {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 0.6;
+  }
+
+  .flow-faint {
+    opacity: 0.45;
+  }
+
+  .print line {
+    stroke: currentColor;
+    stroke-dasharray: 3 1.2 6 1;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+  }
+
+  .flow-column {
+    fill: currentColor;
+    fill-opacity: 0.08;
+    stroke: currentColor;
+    stroke-dasharray: 2 2;
+    stroke-opacity: 0.6;
+    stroke-width: 0.8;
+  }
+
+  .flow-bracket {
+    fill: none;
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.2;
+  }
+
+  .flow-column-name {
+    font-size: 6.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .flow-code {
+    font-size: 7.5px;
+    white-space: pre;
+  }
+
+  .flow-accent {
+    color: var(--ember);
+  }
+
+  .flow-line {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.6;
+  }
+
+  .flow-branch {
+    stroke-dasharray: 5 4;
+  }
+
+  text {
+    fill: currentColor;
+  }
+
+  .flow-label {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+
+  .flow-answer {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .flow-question {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .flow-mono {
+    font-family: var(--font-mono);
+  }
+
+  .flow-tiny {
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+  }
+
+  .flow-row {
+    font-size: 10.5px;
+  }
+
+  .flow-account {
+    font-size: 10.5px;
+  }
+
+  .flow-muted {
+    opacity: 0.65;
+  }
+
+  .flow-on-ink {
+    fill: #fff;
+  }
+
+  .flow-check {
+    fill: none;
+    stroke: var(--g-leaf);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+
+  .flow-stamp {
+    color: var(--ember);
+    opacity: 0.85;
+  }
+
+  .flow-stamp rect {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+  }
+
+  .flow-stamp .flow-stamp-inner {
+    stroke-width: 0.9;
+  }
+
+  .flow-stamp text {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+  }
+</style>

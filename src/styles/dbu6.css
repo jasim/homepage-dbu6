@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "nuaj-agent-docs/theme.css";
+
+/* dbu6 has no mark yet, so the docs' site title is the name alone. */
+.site-title::before {
+  content: none;
+}
+
+/* The name is written lowercase, as on the homepage, not as the theme's small uppercase label. */
+.site-title,
+.site-title:hover {
+  color: var(--ink);
+  font-size: clamp(1.1875rem, 1.05rem + 0.4vw, 1.3125rem);
+  letter-spacing: -0.014em;
+  text-transform: none;
+}
+
+/*
+ * The theme's 3.35rem above an h2 stacks into a gap that cuts sections apart;
+ * this keeps a section break visible without stranding the heading.
+ */
+.sl-markdown-content .sl-heading-wrapper.level-h2 {
+  margin-top: 2.4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* An h3's own margin sits inside the flex wrapper and doesn't collapse into it. */
+.sl-markdown-content .sl-heading-wrapper.level-h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.sl-markdown-content .sl-heading-wrapper.level-h3 h3 {
+  margin-block: 0;
+}
+
+/*
+ * Asides: a quiet tinted panel, no side bar, square like the code blocks.
+ * Body text stays --ink for contrast; only the small label carries the colour.
+ */
+.sl-markdown-content .starlight-aside {
+  --aside-bg: #eef5f8;
+  --aside-label: #20566f;
+  margin-block: var(--block-gap);
+  padding: 0.85rem 1.1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--aside-bg);
+  color: var(--ink);
+}
+
+.sl-markdown-content .starlight-aside--tip {
+  --aside-bg: #edf6f0;
+  --aside-label: #2b6644;
+}
+
+.sl-markdown-content .starlight-aside--caution {
+  --aside-bg: #fcf5e4;
+  --aside-label: #7a5312;
+}
+
+.sl-markdown-content .starlight-aside--danger {
+  --aside-bg: #fbeeee;
+  --aside-label: #8a2c2c;
+}
+
+:root[data-theme="dark"] .sl-markdown-content .starlight-aside {
+  --aside-bg: #1a2a30;
+  --aside-label: #8bcdbb;
+}
+
+:root[data-theme="dark"] .sl-markdown-content .starlight-aside--tip {
+  --aside-bg: #1a2a20;
+  --aside-label: #8fd4a8;
+}
+
+:root[data-theme="dark"] .sl-markdown-content .starlight-aside--caution {
+  --aside-bg: #2c2516;
+  --aside-label: #e6c27a;
+}
+
+:root[data-theme="dark"] .sl-markdown-content .starlight-aside--danger {
+  --aside-bg: #2e1b1b;
+  --aside-label: #eda0a0;
+}
+
+.sl-markdown-content .starlight-aside__title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.3rem;
+  color: var(--aside-label);
+  font-size: 0.75rem;
+  font-weight: var(--weight-display-label);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.sl-markdown-content .starlight-aside__icon {
+  inline-size: 0.9rem;
+  block-size: 0.9rem;
+}
+
+.sl-markdown-content .starlight-aside__content {
+  margin-top: 0;
+}
+
+.sl-markdown-content .starlight-aside__content > * {
+  margin-block: 0;
+}
+
+.sl-markdown-content .starlight-aside__content > * + * {
+  margin-top: 0.75rem;
+}
