@@ -12,6 +12,12 @@ serves every docs page as Markdown at `/<slug>.md`, writes `/llms.txt`,
 buttons. Every docs page needs a `title` and a `description`, and must be
 listed in `sidebar.mjs`, or the build fails.
 
+Agents that send `Accept: text/markdown` get Markdown at the page's own URL:
+`functions/_middleware.js` (the plugin's Cloudflare Pages middleware) answers
+a docs page with its `.md` file and the homepage with `/llms.txt`.
+`public/_routes.json` keeps the function off every other path. Try it with
+`pnpm build && npx wrangler pages dev dist`.
+
 ## Docs
 
 The guides under `src/content/docs/docs/` are copies of `docs/*.md` in the

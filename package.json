@@ -14,7 +14,7 @@
     "@astrojs/starlight": "^0.38.4",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.1.9",
-    "nuaj-agent-docs": "github:jasim/nuaj-agent-docs#cc83573a0c18421f386f28c135223747ee5b1d3b",
+    "nuaj-agent-docs": "github:jasim/nuaj-agent-docs#ecf2880515e6a3a207b77b13adcfe3cd52972e48",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.3.0"
   }
