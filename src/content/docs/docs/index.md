@@ -37,30 +37,46 @@ behind it, so you can check where a number comes from.
 
 You can also ask your coding agent questions about your money in plain
 language, such as "how much did we spend on the kids' activities since
-April?", and it can write reports of its own for you
-([Reports](/docs/reports/)).
+April?", and it can write new reports for you
+([Things to ask your agent](/docs/ask-your-agent/)).
 
 ## How it works
 
+Your coding agent does the bookkeeping, and you answer its questions. A run
+from your statements goes like this:
+
 1. You download statements for each bank account and credit card, as PDF,
    Excel, CSV or text files.
-2. You drop them on dbu6 and press **Add 4 files to my books** (the number is
-   how many files you dropped).
-3. Your coding agent reads the statements and proposes a plan: the accounts
-   it found, a chart of accounts that fits your transactions, and the
-   questions it already has. It changes nothing until you say go.
-4. After you say go, the agent imports the statements and categorizes the
-   transactions. It writes rules for the ones it is sure about and asks you
-   once about the rest.
-5. You open **Review**, check each account and press **Add to my books**.
-   Nothing reaches your books before you do that.
+2. You give them to your coding agent. You can drop them on dbu6 and press
+   **Add 4 files to my books** (the number is how many files you dropped),
+   which opens your agent in a terminal. You can also open your agent in your
+   books folder and tell it where the files are.
+3. The agent reads the statements and replies with a plan: the accounts it
+   found, what it will do, and anything it needs from you first. It changes
+   nothing until you say go.
+4. After you say go, the agent works on its own. It teaches dbu6 to read
+   statement layouts it doesn't know yet, imports every transaction,
+   categorizes them, and checks every balance against the statements. You
+   can leave it running.
+5. The agent shows you what your statements say about your money, and asks
+   you about everything it couldn't settle, in one message. It turns your
+   answers into rules, so it doesn't ask about the same payee again.
+6. Its last message says what to do next. You add the ready accounts to your
+   books on **Review**, or ask the agent to add them. Nothing reaches your
+   books before that.
 
-After the first time, you repeat steps 1, 2 and 5 once a month. dbu6 lists
-which statements it needs, and the rules from the first run categorize most
-new transactions on their own.
+After the first time, you repeat the run once a month with the new
+statements. **Update** lists which statements dbu6 needs, and your rules
+from earlier answers categorize most new transactions, so the agent has
+fewer questions each month.
 
-[Do your books from your statements](/docs/first-books/) walks through the
-first run with screenshots.
+[Set up your books with your coding agent](/docs/first-books/) follows a
+first run, message by message. The agent can also answer questions about
+your money, write new reports and reorganize your categories
+([Things to ask your agent](/docs/ask-your-agent/)).
+
+Every screen in dbu6 also has a link for doing each step yourself, one at a
+time. [Doing it by hand](/docs/by-hand/) describes those screens.
 
 ## Where your data is
 
@@ -78,5 +94,5 @@ dbu6 makes no backups, so back up the `data/` folder yourself
    double-entry are new to you.
 2. [Install dbu6](/docs/install/). It has a prompt you can paste into your
    coding agent, which then installs dbu6 for you.
-3. [Do your books from your statements](/docs/first-books/).
+3. [Set up your books with your coding agent](/docs/first-books/).
 4. [Keep your books up to date](/docs/keeping-up/), once a month.

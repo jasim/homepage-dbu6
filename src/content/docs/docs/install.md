@@ -35,13 +35,15 @@ for anyone who wants to run the commands by hand.
 | Node.js 22.18 or newer, with npm | dbu6 itself | `node --version` |
 | uv | Reading statements (the statement parsers are Python) | `uv --version` |
 | pdftotext, part of poppler | Reading PDF statements | `pdftotext -v` |
+| A coding agent | Doing your books from your statements | **Settings** › **Coding agent**, once dbu6 runs |
 | git (optional) | A first commit of your books folder | `git --version` |
-| A coding agent (optional) | Setting up and categorizing from statements | **Settings** › **Coding agent**, once dbu6 runs |
 
 dbu6 works with Claude Code, Codex and Pi, installed and logged in on the same
-computer. Without an agent, imports still work and your own rules categorize
-transactions, but the agent-led setup in
-[Do your books from your statements](/docs/first-books/) is not available.
+computer. The agent does the bookkeeping in
+[Set up your books with your coding agent](/docs/first-books/) and every month
+after. Without an agent, the step-by-step screens still import statements in
+the layouts dbu6 already reads, and your own rules categorize transactions
+([Doing it by hand](/docs/by-hand/)).
 
 To install the prerequisites:
 
@@ -165,4 +167,4 @@ rules and instructions, and it belongs in git.
 
 ## Next
 
-[Do your books from your statements](/docs/first-books/).
+[Set up your books with your coding agent](/docs/first-books/).

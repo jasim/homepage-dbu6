@@ -38,8 +38,10 @@ Each account name is unique in your books, so you can name an account by its
 name alone, for example "Groceries" rather than "Expenses > Food > Groceries".
 
 You don't need to design a chart of accounts yourself. When you start with
-your statements, your coding agent proposes one that fits the transactions it
-finds, and you can change it afterwards on the **Accounts** page.
+your statements, your coding agent starts you on a standard chart and fits it
+to the transactions it finds. To change it later, tell your agent, for
+example "move Rent under Housing", or press **Reorganize my chart** on the
+**Accounts** page.
 
 ## Double-entry
 
@@ -73,7 +75,7 @@ example Groceries). You can change any draft.
 
 **Posting** a draft adds it to your books, and only posted entries count in
 your reports. In dbu6 you post on the **Review** page by pressing **Add to my
-books**.
+books**, or by asking your coding agent to add them.
 
 **Categorization** is choosing the other account for each draft. dbu6 uses
 your rules first (for example "anything containing DMART goes to
@@ -100,8 +102,8 @@ records it against the Opening Balances account (Equity).
 
 dbu6 reads the opening balance of a bank account or card from its first
 statement. Cash, fixed deposits, investments and loans usually have no
-statement, so you enter their balances yourself once
-([Do your books from your statements](/docs/first-books/#cash-investments-and-loans)).
+statement, so your coding agent asks you for their balances once
+([Things to ask your agent](/docs/ask-your-agent/#record-cash-deposits-investments-and-loans)).
 
 ## Next
 

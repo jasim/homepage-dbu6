@@ -4,7 +4,15 @@ description: "How dbu6 assigns each imported transaction an account: exact and s
 ---
 
 Each imported transaction is assigned an account in two passes: your own rules
-first, then a language model for whatever they miss.
+first, then a language model for whatever they miss. In a run, your coding
+agent then asks you about the transactions neither pass could settle, and
+turns your answers into rules or into lines in your instructions, so the same
+payee is categorized on its own next time
+([Set up your books with your coding agent](/docs/first-books/#message-2-your-money-and-its-questions)).
+
+To change how something is categorized, tell your agent, for example "always
+put SWIGGY under Food Delivery". The agent writes the rule in the files below.
+You can also edit the files yourself.
 
 ## Your rules
 
@@ -36,7 +44,7 @@ answer is not confident, the entry is left blank for you.
 Without an installed agent nothing is categorized this way, and only your
 rules run. If the agent cannot be reached, the import still goes through and
 says how many descriptions were left uncategorized, and why. **Settings** names
-the agent dbu6 uses and lets you switch between Claude Code, Codex and Pi.
+the agent dbu6 uses, and you can switch between Claude Code, Codex and Pi there.
 
 ## Your instructions
 
@@ -45,10 +53,6 @@ you want. When setup creates your chart of accounts and there is no
 `custom_mappings_default.prompt` yet, it writes one from the notes on the
 accounts (the ones you see on hover). If no account has a note, there is no
 file. dbu6 never rewrites it, so edit it to describe your own habits.
-
-Answers you give in a run of **Do my books** become rules here, or lines in
-these prompts, so the same payee is categorized on its own next time
-([Do your books from your statements](/docs/first-books/#answer-its-questions)).
 
 Different banks and cards can list different prompt files in their import
 presets. The presets are kept in the database, and your coding agent changes

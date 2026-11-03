@@ -1,11 +1,11 @@
 ---
 title: Keep your books up to date
-description: "The monthly routine in dbu6: download the statements Update lists, drop them on Update for your coding agent to import and categorize, add each account on Review, and read Overview."
+description: "The monthly run in dbu6: download the statements Update lists, give them to your coding agent, answer its few questions, and add the ready accounts on Review."
 ---
 
 Once your books are set up, keeping them current takes a few minutes a month.
-You download the new statements, drop them on **Update**, and add the result
-on **Review**.
+You download the new statements and give them to your coding agent. The agent
+runs the same steps as the first time, and asks you only about what is new.
 
 ## Download the statements Update lists
 
@@ -14,7 +14,7 @@ on **Review**.
 | Column | What it means |
 | --- | --- |
 | Download from | The month the next statement should start in |
-| Imported until | The last day the account's statements cover, posted or in drafts |
+| Imported until | The last day the account's statements cover, in your books or waiting in Review |
 
 ![Update your books: a card saying draft entries are waiting, the Download these statements list, and the drop area](/assets/docs/update-demo.webp)
 
@@ -23,49 +23,56 @@ account imported until 13 October also asks for October, because its October
 statement is not complete yet. Download each account's statements from that
 month to today.
 
-## Drop them on Update
+## Give them to your agent
 
-Drop the files on **Drop them here**, and press **Add N files to my books**.
-This starts the same run as the first time
-([Do your books from your statements](/docs/first-books/)), but there is
-less to do:
+Drop the files on **Drop them here** on Update, and press **Add N files to
+my books**. You can also open your agent in your books folder and tell it
+where the files are, for example "Do my books from the statements in
+~/Downloads/november".
 
-- The accounts are already set up, so the agent imports the new statements
-  into them.
-- Your rules, including the ones from earlier answers, categorize most of the
-  new transactions, and the coding agent categorizes most of the rest.
-- The agent asks only about new payees and transactions it can't settle.
+The run follows the same three messages as the first time
+([Set up your books with your coding agent](/docs/first-books/)), with less
+in each:
 
-If you add a new bank or card, drop its statements with the others. The agent
-sets it up as it did the first ones.
+- **Message 1** says what is already in your books, for example "Standard
+  Chartered is in your books up to Oct 2026", and lists the new statements.
+  Your accounts are already set up, so there is usually nothing to ask before
+  the agent starts.
+- **Message 2** skips the summary of your money, because you have seen it
+  before. Your rules, including the ones made from your earlier answers,
+  categorize most new transactions, so the agent asks only about new payees
+  and the transactions it can't settle.
+- **Message 3** lists what to do now, as before.
 
-**Import statements, guided** is the step-by-step import, one account at a
-time, for when you want to import without the agent run.
+If you open a new bank account or card, drop its statements with the others.
+The agent sets it up as it did the first ones.
 
-## Review and add
+## Add them to your books
 
-**Update** shows how many accounts have drafts waiting, and **Review drafts**
-opens Review. Each account has three checks, and **Add to my books** posts its
-drafts once they pass:
+Open the link at the top of Message 3, or **Review transactions** on Update.
+Review adds every ready account with one button, **Add N entries from M
+accounts to my books**. You can also tell the agent "add them to my books".
 
-| Check | When it fails |
-| --- | --- |
-| Every transaction goes to an account | **See them in Drafts** opens the drafts with no account |
-| No possible duplicates | **See the duplicates** lists drafts that may repeat an entry already in your books |
-| Your books agree with the bank | **See the balance checks** shows the first day the balances differ |
+If an account isn't ready, Message 3 says why, and **Review** counts what is
+left under **Left to fix**. Press **Fix these** on Review to hand everything
+that is left back to your agent. The agent starts from the transactions
+already in Review, shows you its plan, asks its questions in one round and
+reports, as in a run from new statements.
 
-![Standard Chartered on Review, not ready to add yet: 3 transactions need an account, 2 possible duplicates and 22 balance checks failing from 3 October](/assets/docs/review-stanc-before.webp)
+To fix one transaction yourself, open the account on Review and change it in
+the **Drafts** tab. [Doing it by hand](/docs/by-hand/#review-by-hand)
+describes the rest of Review's checks and tabs.
 
-Each tab on Review also has a button that hands that problem to your coding
-agent, with the prompt for it. The screenshot above is from before the run's
-clean-up, when the transfer from Standard Chartered to Federal Bank was still
-on both statements. Settling the transfer fixed the duplicates and the balance
-checks together.
+## Change how something is categorized
 
-To fix a draft yourself, open **Drafts** and choose the account. A change you
-make there applies to that one draft only. To categorize the same payee the
-same way every time, add a rule ([Categorization](/docs/categorization/)), or
-ask your coding agent to add one.
+If the agent put a payee in the wrong category, tell it, for example:
+
+```text
+Always put SWIGGY under Food Delivery, and fix the ones in Review
+```
+
+The agent adds a rule and recategorizes the transactions in Review that the
+rule matches. [Categorization](/docs/categorization/) describes the rules.
 
 ## Read Overview
 
@@ -86,4 +93,5 @@ month, the current month shows little, so step back to the last complete
 month.
 
 **Income & expenses**, **Balance sheet** and **All reports** have more
-detail ([Reports](/docs/reports/)).
+detail ([Reports](/docs/reports/)). You can also ask your agent about your
+money in your own words ([Things to ask your agent](/docs/ask-your-agent/)).

@@ -36,15 +36,21 @@ reports of your own under "Your reports".
   which statements to import next.
 * *Duplicate Drafts* — drafts that may repeat an entry already in the books.
 
+For a one-off question, such as "what did we spend on travel this year?",
+ask your coding agent. It reads your books and answers in the terminal
+([Things to ask your agent](/docs/ask-your-agent/#ask-about-your-money)).
+
 ## Reports of your own
+
+If you want to see something regularly, ask your coding agent for a report of
+it, in your own words in the terminal, or with **Create a report** on the
+Reports page. The agent follows `npx dbu6 docs reports`, which has one
+complete worked report.
 
 A report is code in `reports/<id>/`, written the way dbu6's own reports are: a
 route that computes it and a React screen that shows it, with full control of
 the screen. dbu6 finds the folder, lists the report under "Your reports", and
 typechecks and tests it under `npx dbu6 check`.
-
-The Reports page has **Create a report**, which hands your coding agent the
-prompt. The guide is `npx dbu6 docs reports`, with one complete worked report.
 
 Pages and routes that are not reports go in `frontend.tsx` and
 `dbu6.config.ts` (`npx dbu6 docs customizing`).

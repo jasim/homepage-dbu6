@@ -11,14 +11,25 @@ export default [
     ],
   },
   {
-    label: "Guides",
+    label: "Working with your agent",
     items: [
       { slug: "docs/keeping-up" },
+      { slug: "docs/ask-your-agent" },
+      { slug: "docs/agent-permissions" },
+    ],
+  },
+  {
+    label: "Reference",
+    items: [
       { slug: "docs/your-books" },
       { slug: "docs/statements" },
       { slug: "docs/categorization" },
       { slug: "docs/reports" },
     ],
+  },
+  {
+    label: "Without the agent run",
+    items: [{ slug: "docs/by-hand" }],
   },
   {
     label: "On GitHub",
