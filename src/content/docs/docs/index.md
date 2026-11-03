@@ -1,191 +1,82 @@
 ---
-title: Set up dbu6
-description: "Install dbu6 on macOS or Linux, create a books folder, set up your accounts, connect a coding agent, or test-drive with sample data."
+title: What dbu6 does
+description: "What dbu6 can tell you about your money, and how it keeps your books from your bank and card statements with your coding agent."
 ---
 
-This guide walks you through setting up a working set of books from scratch.
+dbu6 is an open-source personal finance app. It runs on your own computer and
+keeps your books from the statements your banks and card issuers already give
+you. Your coding agent (Claude Code, Codex or Pi) reads the statements, sets
+up your accounts and categorizes each transaction. You check its work and add
+it to your books.
 
-`dbu6` keeps your books in a self-contained folder on your machine. The `dbu6` application installs directly into that folder's `node_modules` directory, so you never have to clone a repository or build anything from source.
+You don't need to know bookkeeping to use dbu6. If the terms on this site are
+new to you, read [Bookkeeping basics](/docs/bookkeeping-basics/) first. It
+takes about ten minutes.
 
-## Prerequisites
+## What you can find out
 
-Before you begin, make sure your system has the required tools installed.
+Once your statements are in, dbu6 can answer questions like these:
 
-### Required
-
-- **Node.js 22.18 or later** (includes `npm`) — Runs the core `dbu6` application.
-
-### Required for importing statements
-
-If you plan to import bank or card statements (rather than entering every transaction by hand), you also need:
-
-- **`uv`** — Runs the statement parsers (which are written in Python).
-- **`pdftotext`** — Extracts text from PDF statements (included with `poppler`).
-
-### Optional
-
-- **`git`** — If installed, `dbu6` automatically initializes a repository and creates your first commit.
-- **A coding agent** (Claude Code, Codex, or Pi) — Automatically categorizes transactions, proposes a chart of accounts, and writes parsers for new statement formats. If you don't use an agent, imports still work, and transactions are categorized using your manual mapping rules. You can view or switch your active agent at any time in **Settings**.
-
-### Installing dependencies
-
-Run the appropriate commands for your operating system:
-
-```sh
-# macOS (via Homebrew)
-brew install node uv poppler
-
-# Debian and Ubuntu
-sudo apt install poppler-utils
-curl -LsSf https://astral.sh/uv/install.sh | sh
-# For Node.js 22.18+, install via https://nodejs.org/en/download, nvm, or NodeSource.
-# (Default apt packages for nodejs are usually too old.)
-```
-
-:::tip
-You don't need the statement tools just to create your folder or keep books manually. Once you create a folder, you can run `npx dbu6 check` at any time to see which optional or statement tools are missing.
-:::
-
-## 1. Create your books folder
-
-Run `npm init @dbu6` to create a new folder and set up your project:
-
-```sh
-npm init @dbu6 my-books
-cd my-books
-```
-
-The target folder must either not exist yet or be completely empty.
-
-### What happens behind the scenes?
-
-`npm init @dbu6` is shorthand for running the `@dbu6/create` package, which executes `dbu6 init` from the latest `@dbu6/app` release. (To pin a specific version, run `npm init @dbu6@1.2.3` instead.)
-
-The initializer stays strictly inside your new folder and performs the following setup:
-
-1. Writes the base project files and installs `@dbu6/app` into `node_modules`.
-2. Creates `.env.development` (which holds the configuration and generated auth secret used by every `dbu6` command).
-3. Populates `user-config/` with starter templates.
-4. Creates the local SQLite database and, if `git` is installed, makes an initial Git commit.
-
-For a full breakdown of the folder structure, see [Your books](/docs/your-books/).
-
-## 2. Start the local server
-
-Start the development server from inside your new folder:
-
-```sh
-npx dbu6 dev
-```
-
-This command runs database migrations, starts the web server, and prints the local URL (by default, <http://localhost:2345>).
-
-1. Open <http://localhost:2345> in your browser and sign up for an account.
-2. Keep the terminal running while you use `dbu6`. Press **Ctrl+C** when you want to stop the server.
-
-:::note
-By default, new accounts don't require email verification. Any emails `dbu6` generates are printed directly to your terminal output. When you want to run the server without live-reloading, use `npx dbu6 start` instead.
-:::
-
-## 3. Set up your books
-
-Until you post your first transaction, `dbu6` guides you through the initial setup step by step:
-
-1. **Choose a chart of accounts.** Start with the built-in template, or describe your finances in a single sentence (for example: *"Salaried in Bengaluru, paying rent, two kids in school, a car loan, and some freelance income"*). If you have a coding agent connected, it will propose a tailored chart of accounts. Nothing is saved until you approve it.
-2. **Add a bank or card.** Create your first institution from the setup prompt (or add more later via **Update** → **+ Add**, or **Settings** → **Banks and cards**). Give the institution a name and link it to the corresponding account in your chart of accounts.
-3. **Import a recent statement.** Download a PDF, CSV, or XLS statement from your bank and drop it into **Import statements**. `dbu6` detects the layout, extracts the starting balance, and previews the rows it found. This first import establishes the starting date for your books.
-4. **Add opening balances (optional).** Enter the starting balances for your cash, investments, and loans as of your books' start date so your balance sheet is accurate from day one.
-5. **Review and post your transactions.** The **Update** page alerts you whenever draft transactions are waiting. Open **Review** to adjust categories, check for duplicates against earlier imports, verify balance checks, and post. **Nothing affects your books until you post it.**
-
-### Navigating the app
-
-Once you post your first transactions, `dbu6` opens to the **Overview** dashboard. Here you can compare your monthly income, spending, and savings against your typical averages, see your largest spending categories, track your net worth over the last 12 months, and see each bank or card's balance along with the date its books are complete until.
-
-To prevent unimported statements from skewing your numbers, **Overview** defaults to the most recent month where *all* of your accounts have complete data.
-
-Use the **Update** tab for your routine bookkeeping. It shows each account, the date of its last import, and any pending drafts, with one-click shortcuts to **Import** and **Review**.
-
-For deeper dives into steps 3 and 5, read [Importing statements](/docs/statements/) and [Categorization](/docs/categorization/).
-
-## Try it with sample data
-
-Want to explore `dbu6` before importing your own bank statements? While `npx dbu6 dev` is running, open a second terminal in your project folder and run:
-
-```sh
-npx dbu6 seed
-```
-
-This populates a demo account with a full year of sample personal finances. Past months are already posted, and the current month is staged as drafts so you can test the review workflow.
-
-* **Email:** `demo@example.com`
-* **Password:** `demo-password`
-
-Running `npx dbu6 seed` again resets and replaces the demo account's data.
-
-## Everyday commands
-
-Run these commands from your project folder:
-
-| Command | Description |
+| Question | Where dbu6 shows it |
 | --- | --- |
-| `npx dbu6 dev` | Starts the server with live-reload (best during initial setup or parser creation). |
-| `npx dbu6 start` | Starts the server without live-reload (best for daily use or after a reboot). |
-| `npx dbu6 upgrade` | Upgrades `dbu6` to the latest version, runs database migrations, and verifies your setup. |
-| `npx dbu6 check` | Checks your environment and reports any missing dependencies or upgrade issues. |
-| `npx dbu6 docs` | Lists the documentation guides bundled with your installed version. |
+| How much did I earn, spend and save last month? | **Overview** |
+| Is this month's spending higher than usual? | **Overview**, beside each figure's 12-month average |
+| Where does my money go? | **Overview** › Spending by category, and **Income & expenses** |
+| What am I worth today, and is it growing? | **Overview** › Net worth, **Balance sheet**, *Net Worth Over Time* |
+| What did I spend on dining out this year? | **Income & expenses**, or the account's ledger |
+| Which statements do I still need to download? | **Update** |
 
-`npm run dev`, `npm start`, `npm run check`, and `npm run upgrade` do the same as their `npx dbu6` counterparts.
+![Overview for September: income, spending and savings beside their averages, spending by category with a sparkline for each, net worth, and each bank and card's balance](/assets/docs/overview.webp)
 
-## Connect a coding agent
+*Overview, from the sample books used throughout these docs.*
 
-`dbu6` can delegate tasks to a coding agent—such as categorizing unfamiliar transactions, designing a chart of accounts, or writing a Python parser for an unsupported bank statement.
+Each spending category and net worth group on Overview links to the entries
+behind it, so you can check where a number comes from.
 
-Two components allow your agent to talk to `dbu6`:
+![Income and Expenses for the last 12 months: income and spending by account, a bar chart by month, and the largest spending entries](/assets/docs/income-expenses.webp)
 
-### 1. The Sapporta skill (install once per machine)
+You can also ask your coding agent questions about your money in plain
+language, such as "how much did we spend on the kids' activities since
+April?", and it can write reports of its own for you
+([Reports](/docs/reports/)).
 
-`dbu6` is built on [Sapporta](https://sapporta.com). Installing the Sapporta skill teaches your local coding agents how to interact with Sapporta-based apps:
+## How it works
 
-```sh
-npx skills add https://github.com/jasim/sapporta-skills --skill sapporta --global --yes
-```
+1. You download statements for each bank account and credit card, as PDF,
+   Excel, CSV or text files.
+2. You drop them on dbu6 and press **Add 4 files to my books** (the number is
+   how many files you dropped).
+3. Your coding agent reads the statements and proposes a plan: the accounts
+   it found, a chart of accounts that fits your transactions, and the
+   questions it already has. It changes nothing until you say go.
+4. After you say go, the agent imports the statements and categorizes the
+   transactions. It writes rules for the ones it is sure about and asks you
+   once about the rest.
+5. You open **Review**, check each account and press **Add to my books**.
+   Nothing reaches your books before you do that.
 
-### 2. The Sapporta CLI (included with `dbu6`)
+After the first time, you repeat steps 1, 2 and 5 once a month. dbu6 lists
+which statements it needs, and the rules from the first run categorize most
+new transactions on their own.
 
-The agent reads and updates your books through `dbu6`'s HTTP API using the Sapporta CLI (`npx sapporta …`), which is already installed in your project folder. It finds the app's address and the agent's token on its own.
+[Do your books from your statements](/docs/first-books/) walks through the
+first run with screenshots.
 
-After you create your user account in the browser, generate an access token for your agent and verify it:
+## Where your data is
 
-```sh
-npx dbu6 agent env
-npx sapporta api get /api/auth-context
-```
+The books are a SQLite database in a folder on your computer. dbu6 has no
+cloud service and no account with us. The coding agent runs on your computer
+with your own subscription, so your statements go only to the agent you
+already use.
 
-* **`npx dbu6 agent env`** accesses the database directly (no running server required), generates an API token for your user account, revokes any previously generated token, and saves the new one to `.env.agent`. (This file is gitignored—never commit it.) If your project has multiple users, specify which one to use with `--user you@example.com`.
-* **`npx sapporta api get /api/auth-context`** requires the server to be running. It tests the token and prints the authenticated user and workspace.
+dbu6 makes no backups, so back up the `data/` folder yourself
+([Install dbu6](/docs/install/#back-up-your-books)).
 
-:::note
-When `dbu6` hands a prompt to an agent, the agent runs these setup commands automatically. We show them here so you can manually test and verify the agent's access beforehand. Once connected, the agent follows the instructions in [DBU6-BOOKS.md](https://github.com/jasim/dbu6/blob/main/DBU6-BOOKS.md).
-:::
+## Where to start
 
-## Back up your books
-
-:::caution
-Your entire database lives in the `data/` folder. `dbu6` does not make automatic backups or keep cloud copies.
-:::
-
-To back up your books:
-
-1. Stop the `dbu6` server.
-2. Copy the entire `data/` directory to your backup location.
-
-Your custom mapping rules and categorization instructions live alongside `data/` in the `user-config/` folder. Because `user-config/` contains plain-text configuration rather than financial records, you should commit and track it with Git.
-
-## Next steps
-
-* **[Your books](/docs/your-books/)** — Learn how the project folder, accounts, and journal entries are structured.
-* **[Importing statements](/docs/statements/)** — Understand how parsers work and how to handle unsupported statement formats.
-* **[Categorization](/docs/categorization/)** — Set up deterministic mapping rules and customize LLM instructions.
-* **[Reports](/docs/reports/)** — Explore built-in financial reports and learn how to build your own.
-* **[DBU6-BOOKS.md](https://github.com/jasim/dbu6/blob/main/DBU6-BOOKS.md)** — Read the reference manual that coding agents use to perform common accounting tasks via the API.
-* **[DEPLOYMENT.md](https://github.com/jasim/dbu6/blob/main/DEPLOYMENT.md)** — Host your books on a remote server.
+1. [Bookkeeping basics](/docs/bookkeeping-basics/), if accounts, debits and
+   double-entry are new to you.
+2. [Install dbu6](/docs/install/). It has a prompt you can paste into your
+   coding agent, which then installs dbu6 for you.
+3. [Do your books from your statements](/docs/first-books/).
+4. [Keep your books up to date](/docs/keeping-up/), once a month.

@@ -12,6 +12,7 @@ reports of your own under "Your reports".
 
 * *Income and Expenses* — what you spent against income, by month.
 * *Expense Breakdown* — spending by expense account, largest first.
+* *Accounts by Month* — any group of accounts, month by month.
 * *Monthly Summary* — income, expenses and savings rate for each month.
 * *Income Statement* — income and expense totals per account, with net income.
 

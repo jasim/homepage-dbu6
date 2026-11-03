@@ -20,12 +20,21 @@ a docs page with its `.md` file and the homepage with `/llms.txt`.
 
 ## Docs
 
-The guides under `src/content/docs/docs/` are copies of `docs/*.md` in the
-dbu6 repository, which also ship with the package (`npx dbu6 docs`):
-`getting-started.md` is `docs/index.md` here, and links between guides point at
-`/docs/<page>/`. Copied as of dbu6
-`b273d72b8abeefdc29e5315b5d15742b82c90ef2` (2026-10-26); bring them up to date
-from `git log b273d72..main -- docs` in that repository.
+The pages under `src/content/docs/docs/` are written for people who are new
+to dbu6 and to bookkeeping. `index.md` (What dbu6 does),
+`bookkeeping-basics.md`, `install.md`, `first-books.md` and `keeping-up.md`
+exist only on this site. `install.md` is also the page the copy-paste install
+prompt points coding agents at, as <https://dbu6.com/docs/install.md>, so keep
+its commands complete.
+
+`your-books.md`, `statements.md`, `categorization.md` and `reports.md` started
+as copies of `docs/*.md` in the dbu6 repository, which also ship with the
+package (`npx dbu6 docs`). Links between guides point at `/docs/<page>/`. They
+are up to date with dbu6 `7d8b196` (2026-11-02); bring them up to date from
+`git log 7d8b196..main -- docs` in that repository.
+
+Screenshots are in `public/assets/docs/`, taken from a project seeded with
+dbu6-seed-sample-data.
 
 ## Development
 

@@ -41,8 +41,14 @@ the agent dbu6 uses and lets you switch between Claude Code, Codex and Pi.
 ## Your instructions
 
 The prompts the agent gets are in `user-config/`, one file per bank or card if
-you want. `init` writes `custom_mappings_default.prompt` as a starting point;
-edit it to describe your own accounts and habits.
+you want. When setup creates your chart of accounts and there is no
+`custom_mappings_default.prompt` yet, it writes one from the notes on the
+accounts (the ones you see on hover). If no account has a note, there is no
+file. dbu6 never rewrites it, so edit it to describe your own habits.
+
+Answers you give in a run of **Do my books** become rules here, or lines in
+these prompts, so the same payee is categorized on its own next time
+([Do your books from your statements](/docs/first-books/#answer-its-questions)).
 
 Different banks and cards can list different prompt files in their import
 presets. The presets are kept in the database, and your coding agent changes

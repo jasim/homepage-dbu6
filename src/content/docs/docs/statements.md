@@ -4,8 +4,19 @@ description: "How dbu6 reads bank and card statements: bundled parsers, a coding
 ---
 
 A statement comes in as a file from your bank and leaves as journal entries in
-your books. The Import statements screen reads it, recognizes its layout and
-account, checks its balances, and holds the rows as drafts until you post them.
+your books. dbu6 reads it, recognizes its layout and account, checks its
+balances, and holds the rows as drafts until you post them.
+
+There are two ways to import:
+
+* **Drop the files on Update** (or on the first screen of new books) and
+  press **Add N files to my books**. dbu6 saves the files in
+  `tmp/statement-inbox/`, and your coding agent imports all of them in one run
+  ([Do your books from your statements](/docs/first-books/)). Use this for
+  your first setup and every month after.
+* **Import statements, guided** imports one account's statements at a time,
+  with the screens below. Use it when you want to import without the agent
+  run.
 
 ## Parsers
 
@@ -20,8 +31,11 @@ a bundled one of the same name. Never edit anything under `node_modules`.
 
 ## A statement dbu6 cannot read
 
-The Import statements screen recognizes a layout by trying each parser against
-the upload. When none matches, it hands you a prompt for your coding agent:
+dbu6 recognizes a layout by trying each parser against the file. In a run of
+**Do my books**, the agent writes a parser for each layout no parser reads,
+before it imports anything. On **Import statements, guided**, a layout no
+parser reads shows **Set up this format**, with a prompt for your coding
+agent:
 
 * Copy the prompt and paste it into your agent, or
 * click **Open in Claude Code** (or **Codex**, or **Pi**) to start the agent on
