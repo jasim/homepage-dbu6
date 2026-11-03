@@ -151,7 +151,7 @@ Run these in your books folder:
 | `npx dbu6 dev` | Starts the app, and restarts it when a file it loads changes (for example your own reports) |
 | `npx dbu6 upgrade` | Moves to the latest dbu6, migrates the database and runs `check` |
 | `npx dbu6 check` | Reports missing tools and anything an upgrade broke |
-| `npx dbu6 docs` | Lists the guides that ship with your version of dbu6 |
+| `npx dbu6 docs` | Lists the guides your coding agent follows |
 
 `npm start`, `npm run dev`, `npm run check` and `npm run upgrade` do the same.
 

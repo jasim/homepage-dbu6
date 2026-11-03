@@ -20,18 +20,20 @@ a docs page with its `.md` file and the homepage with `/llms.txt`.
 
 ## Docs
 
-The pages under `src/content/docs/docs/` are written for people who are new
-to dbu6 and to bookkeeping. `index.md` (What dbu6 does),
-`bookkeeping-basics.md`, `install.md`, `first-books.md` and `keeping-up.md`
-exist only on this site. `install.md` is also the page the copy-paste install
-prompt points coding agents at, as <https://dbu6.com/docs/install.md>, so keep
-its commands complete.
+The pages under `src/content/docs/docs/` are dbu6's documentation for people,
+written for people who are new to dbu6 and to bookkeeping. This site is their
+only home: the dbu6 README links here. Links between pages point at
+`/docs/<page>/`. `install.md` is also the page the copy-paste install prompt
+points coding agents at, as <https://dbu6.com/docs/install.md>, so keep its
+commands complete.
 
-`your-books.md`, `statements.md`, `categorization.md` and `reports.md` started
-as copies of `docs/*.md` in the dbu6 repository, which also ship with the
-package (`npx dbu6 docs`). Links between guides point at `/docs/<page>/`. They
-are up to date with dbu6 `7d8b196` (2026-11-02); bring them up to date from
-`git log 7d8b196..main -- docs` in that repository.
+The pages describe dbu6 as it is on `main` in the dbu6 repository. When the
+two disagree, the dbu6 code is right and the page is changed to match it.
+
+The guides a coding agent follows (`DBU6-BOOKS.md`, `docs/run-guide.md`, the
+playbooks, and the others `npx dbu6 docs` lists) stay in the dbu6 repository,
+and the pages here name them by their `npx dbu6 docs` command instead of
+copying them.
 
 Screenshots are in `public/assets/docs/`, taken from a project seeded with
 dbu6-seed-sample-data.

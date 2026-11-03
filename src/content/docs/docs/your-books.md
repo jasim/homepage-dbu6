@@ -103,6 +103,17 @@ The first writes `.env.agent` — a credential, gitignored, one token per folder
 and the second names the user and workspace it acts as. An agent given a prompt
 runs the first itself when it has to.
 
-`npx dbu6 docs` lists the guides, and each one is written for the version you
-have installed. The import screens and the Reports page hand your agent a
-prompt for the job at hand.
+Most of the work is one run: drop your statements on Update and press **Add
+N files to my books**. The agent sets up what is missing, imports,
+categorizes, asks what it can't settle in one round in the terminal, and
+stops with each account ready for you to add on Review
+([Do your books from your statements](/docs/first-books/)). The same run
+also finishes what is left in Review, finds why a balance in your books
+stopped matching its statement, reorganizes the chart of accounts, and
+records what your cash, deposits, investments and loans held. The screens
+that offer those hand it a prompt, and you can also ask it in your own
+words, in the terminal, in this folder.
+
+When you work by hand, each job has its own screen, and the import screens
+and the Reports page hand your agent a prompt for one problem at a time.
+`npx dbu6 docs` lists the guides the agent follows.

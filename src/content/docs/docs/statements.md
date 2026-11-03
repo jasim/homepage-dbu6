@@ -49,11 +49,13 @@ has the conventions a parser follows.
 
 ## Transactions that are not a statement
 
-Text copied from a PDF or a web page, HTML, CSV, or a list you typed goes
-through the Import freeform transactions screen. It gives you a prompt for your
-coding agent, which turns the transactions into a statement, asks you for the
-opening and closing balances, and imports them into Drafts. The guide is
-`npx dbu6 docs freeform-guide`.
+Text copied from a PDF or a web page, HTML, CSV, or a list you typed can go
+on Update with your statements, saved as a text file. In the run, the agent
+asks you in its plan which account the file belongs to and what its opening
+and closing balances are. Without the run, the Import freeform transactions
+screen gives you a prompt for your coding agent, which turns the
+transactions into a statement, asks you the same questions, and imports
+them into Drafts. The guide is `npx dbu6 docs freeform-guide`.
 
 ## Balance checks
 
@@ -68,5 +70,6 @@ balances of the statement are used instead.
 
 Imported rows are held as drafts. In Review you reclassify what needs it, check
 for duplicates against earlier imports, confirm the balance checks pass, and
-post. Nothing reaches the books until you post; a draft that turns out to be
-wrong can be discarded without touching them.
+post. After a run, most of that is done, and Review says what is left.
+Nothing reaches the books until you post; a draft that turns out to be wrong
+can be discarded without touching them.

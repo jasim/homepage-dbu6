@@ -14,14 +14,6 @@ credit cards, with one month of statements each. The screenshots are from
 that run. The plan, questions and report are examples in the format the run
 guide asks for, so your agent's wording and numbers will differ.
 
-:::note
-**Do my books** is new and is not in a published release yet. Install dbu6
-0.6.0 or later when it is out, or run `npx dbu6 upgrade` in a books folder
-you already have. A books folder made before this release needs one line in
-its `AGENTS.md`: "When the person asks you to do their books, or points you
-at their statements, follow `npx dbu6 docs run`."
-:::
-
 ## Before you start
 
 - dbu6 is installed and running, and you have signed up
