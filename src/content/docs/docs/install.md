@@ -3,9 +3,10 @@ title: Install dbu6
 description: "A prompt to paste into your coding agent so it installs dbu6 for you, and the installation steps it follows: prerequisites on macOS and Linux, creating a books folder, starting the app, and connecting the agent."
 ---
 
-dbu6 runs on macOS and Linux. It keeps your books in a folder of its own,
-with the dbu6 program installed inside that folder, so you never clone or
-build anything.
+dbu6 runs on macOS and Linux. It keeps your books in a folder of its own.
+The dbu6 program is the npm package `@dbu6/app`, which npm installs in that
+folder's `node_modules`. The package puts the `dbu6` and `sapporta` commands
+in `node_modules/.bin`, and `npx dbu6` runs the `dbu6` command from there.
 
 ## Install with your coding agent
 

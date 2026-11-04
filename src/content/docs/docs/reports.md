@@ -6,7 +6,7 @@ description: "The reports dbu6 ships, writing reports of your own with a coding 
 The Reports page groups what dbu6 ships by what it answers, and lists any
 reports of your own under "Your reports".
 
-## What ships
+## Built-in reports
 
 **Income and spending**
 

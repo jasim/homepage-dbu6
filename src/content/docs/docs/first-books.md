@@ -122,7 +122,7 @@ Answer the questions and reply "go":
 1: 4,120. go
 ```
 
-## While it works
+## The agent at work
 
 After you say go, the agent works on its own and prints one line as each step
 starts or ends, for example "Imported Standard Chartered: 41 transactions, 38
@@ -143,7 +143,7 @@ The agent:
 Nothing it imports is in your books yet. The imported transactions wait in
 **Review** as drafts until you add them. The agent never changes a balance
 that a statement prints, and never deletes a transaction to make a balance
-check pass. [What your agent does on its own](/docs/agent-permissions/) has
+check pass. [Agent permissions](/docs/agent-permissions/) has
 the full list of what it may and may not do.
 
 ## Message 2: your money, and its questions

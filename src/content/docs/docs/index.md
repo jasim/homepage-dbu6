@@ -1,5 +1,5 @@
 ---
-title: What dbu6 does
+title: Introduction to dbu6
 description: "What dbu6 can tell you about your money, and how it keeps your books from your bank and card statements with your coding agent."
 ---
 
@@ -13,7 +13,7 @@ You don't need to know bookkeeping to use dbu6. If the terms on this site are
 new to you, read [Bookkeeping basics](/docs/bookkeeping-basics/) first. It
 takes about ten minutes.
 
-## What you can find out
+## Your reports
 
 Once your statements are in, dbu6 can answer questions like these:
 
@@ -40,7 +40,7 @@ language, such as "how much did we spend on the kids' activities since
 April?", and it can write new reports for you
 ([Things to ask your agent](/docs/ask-your-agent/)).
 
-## How it works
+## The agent run
 
 Your coding agent does the bookkeeping, and you answer its questions. A run
 from your statements goes like this:
@@ -78,7 +78,7 @@ your money, write new reports and reorganize your categories
 Every screen in dbu6 also has a link for doing each step yourself, one at a
 time. [Doing it by hand](/docs/by-hand/) describes those screens.
 
-## Where your data is
+## Your data
 
 The books are a SQLite database in a folder on your computer. dbu6 has no
 cloud service and no account with us. The coding agent runs on your computer
@@ -88,7 +88,7 @@ already use.
 dbu6 makes no backups, so back up the `data/` folder yourself
 ([Install dbu6](/docs/install/#back-up-your-books)).
 
-## Where to start
+## Next
 
 1. [Bookkeeping basics](/docs/bookkeeping-basics/), if accounts, debits and
    double-entry are new to you.

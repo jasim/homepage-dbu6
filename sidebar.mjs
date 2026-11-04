@@ -4,7 +4,7 @@ export default [
   {
     label: "Getting Started",
     items: [
-      { label: "What dbu6 does", slug: "docs" },
+      { label: "Introduction to dbu6", slug: "docs" },
       { slug: "docs/bookkeeping-basics" },
       { slug: "docs/install" },
       { slug: "docs/first-books" },

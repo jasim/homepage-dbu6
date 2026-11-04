@@ -49,7 +49,7 @@ It follows the GAAP approach, with standard accounting reports like trial
 balance, balance sheet and account ledger, alongside reports tuned for personal
 finance such as net worth over time and monthly cashflow.
 
-## What you configure
+## Configuration
 
 Everything specific to you lives in the folder. `data/` is gitignored, and the
 rest is worth committing:
