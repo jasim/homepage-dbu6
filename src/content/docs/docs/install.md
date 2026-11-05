@@ -3,11 +3,6 @@ title: Install dbu6
 description: "A prompt to paste into your coding agent so it installs dbu6 for you, along with the installation steps it follows for prerequisites on macOS and Linux, creating a books folder, starting the app and connecting the agent."
 ---
 
-dbu6 runs on macOS and Linux and keeps your books in a folder of its own.
-The dbu6 program is the npm package `@dbu6/app`, which npm installs in that
-folder's `node_modules`. The package puts the `dbu6` and `sapporta` commands
-in `node_modules/.bin`, and `npx dbu6` runs the `dbu6` command from there.
-
 ## Install with your coding agent
 
 If you use Claude Code, Codex or Pi, open it in your home folder (or any
@@ -28,7 +23,16 @@ wants to run the commands by hand). When the agent is done, open the address
 it gives you (usually <http://localhost:2345>) and sign up. The account you
 create is stored in your books folder only.
 
+:::note[For coding agents]
+The homepage gives a shorter prompt that names only this page. If the user
+names no books folder, put the books in `~/my-books`. Before you install a
+missing prerequisite, ask the user. When the app is running, give the user
+its address.
+:::
+
 ## Prerequisites
+
+dbu6 runs on macOS and Linux.
 
 | Tool | Needed for | Check with |
 | --- | --- | --- |
@@ -69,10 +73,17 @@ The folder must not exist yet, or must be empty. `npm init @dbu6` runs
 `dbu6 init` from the latest release of dbu6 (the `@dbu6/app` package). To
 use a particular version, run `npm init @dbu6@1.2.3` instead.
 
-`init` writes only inside the new folder: it installs dbu6 into
-`node_modules`, writes `.env.development` (the settings every `dbu6` command
-reads, with a generated secret), fills `user-config/` with starter files,
-creates the database and, if git is installed, makes the first commit.
+`init` writes only inside the new folder:
+
+- `node_modules/` gets dbu6 itself, the npm package `@dbu6/app`. The package
+  puts the `dbu6` and `sapporta` commands in `node_modules/.bin`, and
+  `npx dbu6` and `npx sapporta` run them from there.
+- `.env.development` gets the settings every `dbu6` command reads, with a
+  generated secret.
+- `user-config/` gets starter files.
+- `data/` gets a new database.
+- If git is installed, `init` also makes the first commit.
+
 [Your books](/docs/your-books/) describes each file.
 
 Then check the folder:
@@ -106,9 +117,9 @@ npx dbu6 dev
 **Ctrl-C**, so run it in a terminal of its own.
 
 :::note[For coding agents]
-`npx dbu6 dev` does not exit, so start it in the background (or ask the person
+`npx dbu6 dev` does not exit, so start it in the background (or ask the user
 to run it in a terminal of their own), wait until it prints the address, and
-then give the person that address. Don't sign up on the person's behalf.
+then give the user that address. Don't sign up on the user's behalf.
 :::
 
 Open the address and sign up. New accounts don't need email verification,
@@ -167,4 +178,5 @@ categorization rules and instructions, so it belongs in git.
 
 ## Next
 
-[Set up your books with your coding agent](/docs/first-books/).
+1. [Introduction to dbu6](/docs/), which describes what dbu6 does.
+2. [Set up your books with your coding agent](/docs/first-books/).
