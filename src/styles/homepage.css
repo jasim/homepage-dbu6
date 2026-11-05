@@ -246,6 +246,57 @@ figcaption {
   color: #fff;
 }
 
+/* Get started in the hero: larger than the other buttons, a brighter
+   green, and set in a pale green ring, so it reads as the page's one
+   button. On hover the button and its ring deepen together and the arrow
+   moves forward. */
+
+.btn-hero {
+  --hero-fill: #2f7d56;
+  --hero-ring: #dcece2;
+  background: var(--hero-fill);
+  border-color: var(--hero-fill);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0 6px var(--hero-ring);
+  font-size: var(--text-base);
+  gap: 0.55rem;
+  margin: 6px;
+  min-height: 3.25rem;
+  padding: 0.75rem 1.4rem;
+  transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.btn-hero:hover {
+  --hero-fill: #1f5e3f;
+  --hero-ring: #c3dccd;
+  background: var(--hero-fill);
+  border-color: var(--hero-fill);
+}
+
+.btn-hero:active {
+  --hero-fill: #174a31;
+}
+
+.btn-hero:focus-visible {
+  outline: 2px solid var(--hero-fill);
+  outline-offset: 8px;
+}
+
+.btn-hero svg {
+  fill: none;
+  height: 1.05rem;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  transition: transform 120ms ease;
+  width: 1.05rem;
+}
+
+.btn-hero:hover svg {
+  transform: translateX(2px);
+}
+
 .btn-secondary {
   background: var(--card);
   border-color: var(--rule);
@@ -385,7 +436,7 @@ h2 .tone {
 }
 
 /* Watch the demo, over the Overview: a video control rather than a button,
-   so not Getting Started's pill. A green tile in the one accent, a little shorter than Getting Started so it doesn't outweigh
+   so not the Get started button. A green tile in the one accent, a little shorter than Get started so it doesn't outweigh
    it, and less rounded, with white words and a white play mark, on a shadow
    deep enough to lift it off the white screenshot. Centred on a small
    window; on a large one held near the top, so it shows above the fold. */
@@ -430,7 +481,7 @@ h2 .tone {
   width: 0.85rem;
 }
 
-/* The install command beside Getting Started: the line as typed at a
+/* The install command beside Get started: the line as typed at a
    prompt, no box, with a copy icon at its end that turns to a tick once
    copied. */
 
