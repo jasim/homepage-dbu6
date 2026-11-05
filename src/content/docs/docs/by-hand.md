@@ -3,23 +3,22 @@ title: Doing it by hand
 description: "The step-by-step screens in dbu6 for people who want to drive each step themselves: setting up by hand, importing one account at a time, reviewing drafts check by check, writing rules, recording opening balances and editing the chart."
 ---
 
-The rest of these docs describe your coding agent running each job from start
+The rest of these docs describe how your coding agent runs each job from start
 to finish. Every screen in dbu6 also has a smaller link beside the agent's
-button for doing the same job yourself, one step at a time. This page
+button so you can do the same job yourself, one step at a time. This page
 describes those screens.
 
-Many of these screens still use the coding agent, but for one problem at a
-time: a button hands that problem to the agent with a prompt, and you decide
-what to do next. The agent shows you its plan first and changes nothing until
-you say go.
+On many of these screens, clicking a button still sends one problem at a time
+to your coding agent with a prompt, and you decide what to do next, and the
+agent shows you its plan first and changes nothing until you say go.
 
 ## Set up your books by hand
 
 **Set up by hand**, on **Let's set up your books**, starts the step-by-step
 setup:
 
-1. Choose a chart of accounts. You can start from dbu6's starter chart, or
-   describe your finances in a sentence and your coding agent proposes a chart
+1. Choose a chart of accounts by starting from dbu6's starter chart, or by
+   describing your finances in a sentence so your coding agent proposes a chart
    from it.
 2. Add one bank or card at a time, with **Add a bank or card**.
 3. Import each account's statements on **Import statements, guided**.
@@ -27,17 +26,17 @@ setup:
 ## Import statements one account at a time
 
 **Import statements, guided** (under **Tools**, and as a link beside the drop
-area on **Update**) imports the statements of one account at a time. dbu6
-reads each file, recognizes its layout and account, checks its balances, and
-imports the rows into Review.
+area on **Update**) imports the statements of one account at a time by reading
+each file, recognizing its layout and account, checking its balances, and
+importing the rows into Review.
 
 If dbu6 can't import a file, the screen says why, and a button beside the
-file hands that problem to your coding agent. For example, a layout no parser
-reads shows **Set up this format**. The agent reads
+file sends that problem to your coding agent. For example, if no parser reads
+the file's layout, the screen shows **Set up this format**. The agent reads
 `npx dbu6 docs parser-guide`, writes a parser for the layout with a test, and
-then you import the file again. The button opens the agent in a new terminal
-window on macOS, and gives you a command to run on Linux. Its arrow has **Copy
-prompt** and **View prompt**.
+then you import the file again. Clicking that button opens the agent in a new
+terminal window on macOS or gives you a command to run on Linux, and the arrow
+beside it has **Copy prompt** and **View prompt**.
 
 **Import freeform transactions**, under **Tools**, imports transactions that
 are not a statement, such as text copied from a web page or a list you typed.
@@ -47,8 +46,8 @@ closing balances, and imports them into Review.
 
 ## Review by hand
 
-**Review** lists each account with transactions waiting. Open an account to
-see its three checks:
+**Review** lists each account with transactions waiting. When you open an
+account, it shows three checks:
 
 | Check | When it fails |
 | --- | --- |
@@ -60,10 +59,10 @@ see its three checks:
 
 Each check has a tab:
 
-- **Drafts** lists every transaction with the account it goes to. A change you
-  make there applies to that one transaction only.
+- **Drafts** lists every transaction with the account it goes to, and a change
+  you make there applies to that one transaction only.
 - **Duplicates** and **Balance checks** list what fails. Each tab also has a
-  button that hands that problem to your coding agent.
+  button that sends that problem to your coding agent.
 - **Improve categorization** collects rule requests: you pick transactions and
   say where that kind of transaction belongs, and your coding agent turns the
   requests into rules.
@@ -80,7 +79,7 @@ accounts to my books** adds them in one go.
 
 Your rules are in `user-config/transaction_mappings.mjs`, and your
 instructions for the AI categorizer are in the `custom_mappings_*.prompt`
-files next to it. You can edit both yourself.
+files next to it. You can edit both yourself, and
 [Categorization](/docs/categorization/) describes their format.
 
 ## Record an opening balance by hand
@@ -93,6 +92,6 @@ what one account held, or what you owed on it, on the day your books start.
 ## Edit the chart one account at a time
 
 On **Accounts**, you can open any account and change its name or the account
-it belongs under. Moving the transactions of one account
-into another, or splitting an account in two, is easier with
-**Reorganize my chart**, which hands the whole change to your agent.
+it belongs under, whereas moving the transactions of one account into another,
+or splitting an account in two, is easier with **Reorganize my chart**, which
+sends the whole change to your agent.

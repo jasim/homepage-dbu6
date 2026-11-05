@@ -1,9 +1,9 @@
 ---
 title: Install dbu6
-description: "A prompt to paste into your coding agent so it installs dbu6 for you, and the installation steps it follows: prerequisites on macOS and Linux, creating a books folder, starting the app, and connecting the agent."
+description: "A prompt to paste into your coding agent so it installs dbu6 for you, along with the installation steps it follows for prerequisites on macOS and Linux, creating a books folder, starting the app and connecting the agent."
 ---
 
-dbu6 runs on macOS and Linux. It keeps your books in a folder of its own.
+dbu6 runs on macOS and Linux and keeps your books in a folder of its own.
 The dbu6 program is the npm package `@dbu6/app`, which npm installs in that
 folder's `node_modules`. The package puts the `dbu6` and `sapporta` commands
 in `node_modules/.bin`, and `npx dbu6` runs the `dbu6` command from there.
@@ -22,12 +22,11 @@ Follow the instructions at https://dbu6.com/docs/install.md
 - Start the app, and tell me the address to open in my browser.
 ```
 
-The agent reads the rest of this page and runs the commands in it. When it is
-done, open the address it gives you (usually <http://localhost:2345>) and
-sign up. The account you create is stored in your books folder only.
-
-The rest of this page is the installation itself, written for the agent and
-for anyone who wants to run the commands by hand.
+The agent reads the installation steps on the rest of this page and runs the
+commands in them (these steps are written for the agent and for anyone who
+wants to run the commands by hand). When the agent is done, open the address
+it gives you (usually <http://localhost:2345>) and sign up. The account you
+create is stored in your books folder only.
 
 ## Prerequisites
 
@@ -39,11 +38,11 @@ for anyone who wants to run the commands by hand.
 | A coding agent | Doing your books from your statements | **Settings** › **Coding agent**, once dbu6 runs |
 | git (optional) | A first commit of your books folder | `git --version` |
 
-dbu6 works with Claude Code, Codex and Pi, installed and logged in on the same
-computer. The agent does the bookkeeping in
+dbu6 works with Claude Code, Codex and Pi when they are installed and logged in
+on the same computer. The agent does the bookkeeping in
 [Set up your books with your coding agent](/docs/first-books/) and every month
-after. Without an agent, the step-by-step screens still import statements in
-the layouts dbu6 already reads, and your own rules categorize transactions
+after. Without an agent, the step-by-step screens can still import statements
+in the layouts dbu6 already reads, and your own rules categorize transactions
 ([Doing it by hand](/docs/by-hand/)).
 
 To install the prerequisites:
@@ -70,7 +69,7 @@ The folder must not exist yet, or must be empty. `npm init @dbu6` runs
 `dbu6 init` from the latest release of dbu6 (the `@dbu6/app` package). To
 use a particular version, run `npm init @dbu6@1.2.3` instead.
 
-`init` writes only inside the new folder. It installs dbu6 into
+`init` writes only inside the new folder: it installs dbu6 into
 `node_modules`, writes `.env.development` (the settings every `dbu6` command
 reads, with a generated secret), fills `user-config/` with starter files,
 creates the database and, if git is installed, makes the first commit.
@@ -82,11 +81,11 @@ Then check the folder:
 npx dbu6 check
 ```
 
-It reports any prerequisite that is missing.
+This command reports any missing prerequisite.
 
 ## Install the Sapporta skill
 
-dbu6 is built on [Sapporta](https://sapporta.com). The Sapporta skill tells
+dbu6 is built on [Sapporta](https://sapporta.com), and the Sapporta skill tells
 coding agents how to work with a Sapporta app. Install it once per computer:
 
 ```sh
@@ -107,7 +106,7 @@ npx dbu6 dev
 **Ctrl-C**, so run it in a terminal of its own.
 
 :::note[For coding agents]
-`npx dbu6 dev` does not exit. Start it in the background (or ask the person
+`npx dbu6 dev` does not exit, so start it in the background (or ask the person
 to run it in a terminal of their own), wait until it prints the address, and
 then give the person that address. Don't sign up on the person's behalf.
 :::
@@ -125,9 +124,9 @@ switch between them.
 
 ![Settings, with Coding agent set to Claude Code, and the Banks & cards, Opening balances and Categorization rules rows](/assets/docs/settings.webp)
 
-When dbu6 hands a prompt to your agent, it also gives your books folder an
-access token for the agent, in `.env.agent`, if the folder doesn't have one
-that works. You don't need to do anything else.
+When dbu6 passes a prompt to your agent, it also writes an access token for the
+agent to `.env.agent` in your books folder if the folder doesn't have one that
+works, so you don't need to do anything else.
 
 To create the token yourself, for example to try the agent's access before
 you start, run this after you have signed up:
@@ -137,12 +136,12 @@ npx dbu6 agent env
 npx sapporta api get /api/auth-context
 ```
 
-The first command writes `.env.agent`. This file is a credential: it is
-gitignored, and you should never commit or share it. Creating a new token
-revokes the tokens dbu6 created for that account before. The second command
-needs the app running, and prints the user and workspace the token acts for.
-If more than one person has signed up in this folder, name the account:
-`npx dbu6 agent env --user you@example.com`.
+`npx dbu6 agent env` writes `.env.agent` and revokes any tokens dbu6 created
+for that account before (if more than one person has signed up in this folder,
+name the account with `npx dbu6 agent env --user you@example.com`). Because
+`.env.agent` is a credential, it is gitignored, and you should never commit or
+share it. The second command needs the app running, and prints the user and
+workspace the token acts for.
 
 ## Everyday commands
 
@@ -152,7 +151,7 @@ Run these in your books folder:
 | --- | --- |
 | `npx dbu6 start` | Starts the app |
 | `npx dbu6 dev` | Starts the app, and restarts it when a file it loads changes (for example your own reports) |
-| `npx dbu6 upgrade` | Moves to the latest dbu6, migrates the database and runs `check` |
+| `npx dbu6 upgrade` | Installs the latest dbu6, migrates the database and runs `check` |
 | `npx dbu6 check` | Reports missing tools and anything an upgrade broke |
 | `npx dbu6 docs` | Lists the guides your coding agent follows |
 
@@ -163,8 +162,8 @@ Run these in your books folder:
 Your books are in the `data/` folder, and dbu6 makes no other copy. To back
 them up, stop dbu6 and copy the whole `data/` folder.
 
-`user-config/` is beside `data/`, not inside it. It holds your categorization
-rules and instructions, and it belongs in git.
+Also, `user-config/` is beside `data/` (not inside it) and holds your
+categorization rules and instructions, so it belongs in git.
 
 ## Next
 

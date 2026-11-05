@@ -1,15 +1,16 @@
 ---
 title: Set up your books with your coding agent
-description: "Your first run: give your coding agent every bank and card statement, approve its plan, answer its questions in one round, and add the ready accounts to your books."
+description: "In your first run, you give your coding agent every bank and card statement, approve its plan, answer its questions in one round, and add the ready accounts to your books."
 ---
 
 You set up your books by giving your coding agent all your bank and card
 statements at once. The agent works out which statement belongs to which
 account, starts you on a chart of accounts, imports and categorizes every
-transaction, and checks each balance against the statements. You read three
-messages from it and answer what it couldn't work out on its own.
+transaction, and checks each balance against the statements. During the run,
+you read three messages from the agent and answer what it couldn't work out on
+its own.
 
-This page follows one run on sample statements: two bank accounts and two
+This page follows one run on sample statements for two bank accounts and two
 credit cards, with one month of statements each. The messages are examples in
 the format the agent follows, so your agent's wording and numbers will differ.
 
@@ -27,14 +28,14 @@ books, from your bank's website or app.
 
 - **Formats:** PDF, Excel (XLS or XLSX), CSV or text. Choose the format your
   bank offers that lists every transaction. Text copied from a web page or an
-  app works too.
+  app also works.
 - **Period:** any period, in any order. Your books start on the day before
   your earliest statement, so download back as far as you want reports to
   go. A few months is enough to start, and you can add earlier statements
   later.
 - **Gaps:** for each account, download every statement between its first and
-  its last. The agent tells you about a missing month, and imports the
-  account up to the gap.
+  its last. If a month is missing, the agent tells you about it and imports
+  the account up to the gap.
 
 The agent reads statements from any bank. dbu6 already reads some banks'
 layouts, and the agent teaches it each new layout the first time it sees one.
@@ -46,9 +47,9 @@ on it, or press **Choose files**.
 
 ![Let's set up your books, with a large drop area for statement files and a Set up by hand link](/assets/docs/first-run.webp)
 
-The files are listed under **Files to add**. You can drop more files, and a
-file you drop twice is added once. **Remove** takes a file off the list.
-dbu6 only saves the files at this point, and has read nothing.
+The files are listed under **Files to add**, where dbu6 only saves them and has
+read nothing yet. You can drop more files (a file you drop twice is added
+once), or click **Remove** to take a file off the list.
 
 ![Four statement files listed under Files to add, each with its size and a Remove button, and the Add 4 files to my books button](/assets/docs/first-run-files.webp)
 
@@ -60,13 +61,13 @@ Press **Add 4 files to my books** (the number is how many files you dropped).
 - **If dbu6 can't start your agent**, it copies the request to the clipboard.
   Open your agent in your books folder and paste it.
 
-The arrow beside the button has the other ways: **Copy prompt** and **View
-prompt**.
+Clicking the arrow beside the button shows the other options: **Copy prompt**
+and **View prompt**.
 
 ![The menu beside the Add files to my books button on Linux, with Command for Claude Code, Copy prompt and View prompt](/assets/docs/agent-menu.webp)
 
-You can also skip the app. Open your agent in your books folder and tell it
-where the statements are:
+You can also skip the app by opening your agent in your books folder and
+telling it where the statements are:
 
 ```text
 Do my books from the statements in ~/Downloads/statements
@@ -76,8 +77,8 @@ The agent reads the files where they are and starts the same run.
 
 ## Message 1: the plan
 
-The agent reads every file and your books, and replies with a plan. It
-changes nothing until you say go.
+The agent reads every file and your books and then replies with a plan, without
+changing anything until you say go.
 
 ```text
 I read 4 files. They are these accounts:
@@ -107,14 +108,15 @@ This will take a few minutes. You can leave it running. Go ahead?
 ```
 
 The plan lists each account the agent found, with the months its statements
-cover. Under the accounts it names anything you can act on, such as a missing
-month and where to download it. "Before I start" holds only what the agent
-needs before it can import, for example a card's opening balance or which
-account a text file belongs to. Every other question waits for Message 2.
+cover. Under the accounts, it names anything you can act on, such as a missing
+month and where to download it. The "Before I start" section lists only what
+the agent needs before it can import, for example a card's opening balance or
+which account a text file belongs to, and the agent saves every other question
+for Message 2.
 
 If a statement comes from a bank dbu6 can't read yet, the plan says so, and
-the agent teaches dbu6 that layout before it imports. Later statements in
-the same layout are read without the agent's help.
+the agent teaches dbu6 that layout before it imports. dbu6 can then read later
+statements in the same layout without the agent's help.
 
 Answer the questions and reply "go":
 
@@ -126,7 +128,7 @@ Answer the questions and reply "go":
 
 After you say go, the agent works on its own and prints one line as each step
 starts or ends, for example "Imported Standard Chartered: 41 transactions, 38
-already sorted". You can leave it running.
+already sorted", so you can leave it running.
 
 The agent:
 
@@ -140,11 +142,11 @@ The agent:
   two statements, and keeps one copy of each,
 - removes exact duplicates, and checks every balance the statements print.
 
-Nothing it imports is in your books yet. The imported transactions wait in
-**Review** as drafts until you add them. The agent never changes a balance
-that a statement prints, and never deletes a transaction to make a balance
-check pass. [Agent permissions](/docs/agent-permissions/) has
-the full list of what it may and may not do.
+The transactions the agent imports stay in **Review** as drafts, so nothing is
+in your books until you add them. Also, the agent never changes a balance that
+a statement prints, and never deletes a transaction to make a balance check
+pass. [Agent permissions](/docs/agent-permissions/) lists everything the agent
+may and may not do.
 
 ## Message 2: your money, and its questions
 
@@ -212,16 +214,16 @@ ok 4a 5a 8 8000 rest skip
 
 Each answer that applies to more than one transaction becomes a rule, so the
 agent categorizes the same payee on its own next month and doesn't ask again.
-If you ask for a change to the categories in your reply, for example "put
-Rent under Housing", the agent makes it too.
+If you ask the agent to change the categories in your reply, for example "put
+Rent under Housing", it changes them too.
 
-There is no second round of questions. Anything your answers leave open is
+There is no second round of questions, so anything your answers leave open is
 listed in Message 3.
 
 ## Message 3: what to do now
 
-The run ends with a report. Your next steps come first, then what the agent
-changed:
+The run ends with a report that lists your next steps first, followed by what
+the agent changed:
 
 ```text
 Your books are ready to review: http://localhost:2345/review
@@ -253,10 +255,10 @@ reason, and "What to do now" says what you can do about it.
 
 ## Add them to your books
 
-Open the link in the report. **Review** lists each account and how many
-transactions are ready, and **Add 70 entries from 4 accounts to my books**
-adds every ready account in one go. You can also tell the agent "add them
-to my books", and it adds the same accounts.
+Open the link in the report to go to **Review**, which lists each account and
+how many transactions are ready. Clicking **Add 70 entries from 4 accounts to
+my books** adds every ready account in one go. If you tell the agent "add them
+to my books" instead, it adds the same accounts.
 
 Before you add an account, you can open it on Review to look at its
 transactions and checks:
