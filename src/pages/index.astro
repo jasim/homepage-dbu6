@@ -76,10 +76,10 @@ function ruleParts(rule: string): RulePart[] {
        the demo (in a lightbox) played from it.
        The subtitle, the app at localhost, and the window bars' paths in
        ~/my-books show that the books are local.
-    2. Designed for AI power users (#agent): the agents it works with and
-       what you can ask of yours, with importing statements and why your books
-       suit an agent, beside a sample run; then two questions asked of it,
-       which switch between their answers, beside the chosen answer.
+    2. Automatic bookkeeping with your coding agent (#agent): the agents it works with and
+       what you can ask of yours, with importing statements, beside a sample
+       run; then two questions asked of it, which switch between their
+       answers, beside the chosen answer.
     3. Double-entry bookkeeping (#trust, #reports): the system professional
        accountants use, and the whole picture it gives you, in four reports:
        income and expenses, the balance sheet, net worth over time, and
@@ -91,7 +91,7 @@ function ruleParts(rule: string): RulePart[] {
     5. Questions (#faq), a table of questions and answers on the desk
        engraving.
 
-    Designed for AI power users sits on a white band, so the move from
+    Automatic bookkeeping with your coding agent sits on a white band, so the move from
     the hero's centred copy to the left-aligned chapters reads as a new
     chapter; from Double-entry on, sections alternate between a soft band
     and the page. The look (the desk surface, the cards, the engraving
@@ -178,7 +178,7 @@ function ruleParts(rule: string): RulePart[] {
             </li>
             <li>
               <h4>Stored locally in SQLite</h4>
-              <p>Your books live in a single portable, scriptable SQLite file on your machine that you and your coding agent can query and build on directly.</p>
+              <p>Your books live in a single portable, scriptable SQLite file on your machine that you and your agent can query and build on directly.</p>
             </li>
           </ul>
         </div>
@@ -225,7 +225,7 @@ function ruleParts(rule: string): RulePart[] {
              top of the section. -->
         <div class="agent-row">
           <div class="agent-copy">
-            <h2>Designed for AI power users</h2>
+            <h2>Automatic bookkeeping with your coding agent</h2>
             <!-- The marks are Simple Icons' Claude and OpenAI paths; Pi has no
                  mark of its own, so it gets the letter. -->
             <ul class="chips agent-chips" aria-label="Coding agents">
@@ -233,10 +233,9 @@ function ruleParts(rule: string): RulePart[] {
               <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>Codex</li>
               <li><svg class="pi" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11 M5.75 4.5v9 M10.25 4.5v7.25a1.75 1.75 0 0 0 3 1.25"/></svg>Pi</li>
             </ul>
-            <p class="agent-lede">You can run dbu6 entirely from your coding agent, without ever opening the app. Ask it to import your statements, get financial projections, or create new reports and features.</p>
+            <p class="agent-lede">You can run dbu6 entirely from your agent, without ever opening the app. Ask it to import your statements, get financial projections, or create new reports and features.</p>
             <h3>Import your statements with one prompt</h3>
-            <p>Your coding agent reads your statements and records the transactions. It asks you only about the ones it can't categorize.</p>
-            <p>dbu6 was built from scratch to be agent-native: all your data sits in a single .sqlite file, an AGENTS.md file documents double-entry bookkeeping conventions, and your coding agent calls the exact same internal APIs that power the web app.</p>
+            <p>Point your agent at a folder of bank and card statements. It identifies which account each file belongs to, imports and categorizes the transactions, and verifies the totals against each statement's closing balance. When a transaction is ambiguous—such as a transfer to a person it hasn't seen before—it asks you how to classify it.</p>
           </div>
 
           <!-- A sample run: what you type in the grey bubble, as on the
@@ -265,7 +264,7 @@ function ruleParts(rule: string): RulePart[] {
         <div class="agent-row asks" data-tabs>
           <div class="agent-copy">
             <h3>Ask anything about your money</h3>
-            <p>Your coding agent answers from your books, so the figures are your own.</p>
+            <p>Your agent can query your full history across bank accounts, cards, loans, and investments, and it already knows how taxes, interest rates, and compounding work. So it can answer specific questions about your past spending, run projections, or model a major financial decision using your actual numbers.</p>
             <div class="ask-cards" role="tablist" aria-label="Questions asked of the agent">
               <button type="button" role="tab" id="tab-subscriptions" aria-controls="panel-subscriptions" aria-selected="true">
                 <span class="report-name">List all my recurring subscriptions</span>
@@ -368,7 +367,7 @@ function ruleParts(rule: string): RulePart[] {
               ))}
             </ul>
             <ul class="points">
-              <li><h4>Generate bank parsers automatically</h4><p>The first time you upload an unfamiliar statement format, your coding agent writes and saves a local parser for that bank. Future statements parse instantly on your machine.</p></li>
+              <li><h4>Generate bank parsers automatically</h4><p>The first time you upload an unfamiliar statement format, your agent writes and saves a local parser for that bank. Future statements parse instantly on your machine.</p></li>
               <li><h4>Review imports as drafts first</h4><p>New imports land in a staging table as drafts, so you can verify everything before committing transactions to your books.</p></li>
             </ul>
           </div>
@@ -386,8 +385,8 @@ function ruleParts(rule: string): RulePart[] {
             </ul>
             <ul class="points">
               <li><h4>Exact string matching</h4><p>Transactions are classified by first applying local string-matching rules that you define. For example, you can write a rule to match any transaction containing <code>"ANTHROPIC"</code> to <code>SaaS Expenses</code>.</p></li>
-              <li><h4>Powerful plain English rules</h4><p>For everything else, your coding agent evaluates the transaction against your plain-English instructions. If there is any ambiguity, the agent asks you how to categorize it.</p></li>
-              <li><h4>Grow your own system</h4><p>When you answer a question about a recurring or generalizable expense, your coding agent writes a new rule to your config. Over time, your ruleset grows tailored to your finances—and the agent rarely needs your intervention.</p></li>
+              <li><h4>Powerful plain English rules</h4><p>For everything else, your agent evaluates the transaction against your plain-English instructions. If there is any ambiguity, the agent asks you how to categorize it.</p></li>
+              <li><h4>Grow your own system</h4><p>When you answer a question about a recurring or generalizable expense, your agent writes a new rule to your config. Over time, your ruleset grows tailored to your finances—and the agent rarely needs your intervention.</p></li>
             </ul>
           </div>
           <!-- The rules file open in a plain text editor: the window's
@@ -421,7 +420,7 @@ function ruleParts(rule: string): RulePart[] {
             <dt>How much work is it each month?</dt>
             <dd>
               <p>Very little. You don't enter transactions by hand. Once a month, you get your bank and card statements and point your coding agent at them (or upload them in the app). You may need to answer a few questions about transactions the agent can't confidently categorize.</p>
-              <p>dbu6 also checks your books for problems such as duplicate entries and balance mismatches. Your coding agent can fix any of them in one click.</p>
+              <p>dbu6 also checks your books for problems such as duplicate entries and balance mismatches. Your agent can fix any of them in one click.</p>
             </dd>
           </div>
           <div>
@@ -435,6 +434,12 @@ function ruleParts(rule: string): RulePart[] {
             <dd>
               <p>Your books are a SQLite file in a folder on your computer, and dbu6 has no hosted service or cloud sync. Importing statements and applying your text rules happen locally, without the agent.</p>
               <p>However, when your coding agent reads your transactions (to write a parser for a new bank statement, or to categorize transactions, or to answer a question), that text and related data goes to your model provider under your plan.</p>
+            </dd>
+          </div>
+          <div>
+            <dt>What if I need absolute privacy?</dt>
+            <dd>
+              <p>You can run a local model on your own computer, so your transactions never leave it. Pi can use models served by a local runner such as <a href="https://ollama.com/">Ollama</a>, and dbu6 uses whichever model you set as Pi's default.</p>
             </dd>
           </div>
           <div>
@@ -453,7 +458,7 @@ function ruleParts(rule: string): RulePart[] {
             <dt>Do I need to know accounting?</dt>
             <dd>
               <p>No. Thanks to AI, you can now get the reporting power of double-entry bookkeeping without any of the learning curve.</p>
-              <p>The only complexity with double-entry accounting was that you had to understand how to map a transaction into its style - which account to debit, which to credit, and how to structure the entries. All of these are now handled in dbu6 with the help of your coding agent. You can even write your transactions in freeform English, and your coding agent will use dbu6's guidance to create them accurately.</p>
+              <p>The only complexity with double-entry accounting was that you had to understand how to map a transaction into its style - which account to debit, which to credit, and how to structure the entries. All of these are now handled in dbu6 with the help of your coding agent. You can even write your transactions in freeform English, and your agent will follow the double-entry conventions in <code>AGENTS.md</code> to create them accurately.</p>
             </dd>
           </div>
           <div>
