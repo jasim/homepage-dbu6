@@ -107,4 +107,5 @@ statement, your coding agent asks you for their balances once
 
 ## Next
 
-[Install dbu6](/docs/install/).
+[Set up your books with your coding agent](/docs/first-books/), once you have
+[installed dbu6](/docs/install/).

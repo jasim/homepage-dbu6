@@ -42,10 +42,12 @@ function ruleParts(rule: string): RulePart[] {
     Flow: each step answers the question the last one raises, and the H2s
     alone tell the story.
     1. Hero: what it is, in the headline, and what you do with it, under it;
-       Get started with the command that installs it beside it; and the
-       Overview it gives you, with the demo (in a lightbox) played from it.
-       The install command, the app at localhost, and the window bars' paths
-       in ~/my-books show that the books are local.
+       Get started, with a prompt beside it that you paste into a coding
+       agent to install dbu6, and under them that it's free and open source
+       with no tracking or telemetry; and the Overview it gives you, with
+       the demo (in a lightbox) played from it.
+       The subtitle, the app at localhost, and the window bars' paths in
+       ~/my-books show that the books are local.
     2. Designed for AI power users (#agent): in one column, the agents it
        works with, what you can ask of yours, two questions asked of it (the
        answer to the one chosen, with the questions under it to switch
@@ -98,20 +100,59 @@ function ruleParts(rule: string): RulePart[] {
     <section class="section hero">
       <div class="container">
         <div class="hero-copy">
-          <!-- The headline names it; the subtitle under it says what you do
-               with it. -->
-          <h1>AI workspace for your personal finance</h1>
-          <p class="hero-subtitle">Track your income and expense, see your net worth, and import statements from anywhere. Everything in double-entry books, stored locally in SQLite.</p>
-          <!-- Get started, with the command that makes a books folder
-               (the Setup guide's first step) beside it, as you'd type it.
-               Copy shows only with the script. -->
-          <div class="actions">
-            <a class="btn-primary btn-hero" href="/docs/">Get started<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4"/></svg></a>
-            <div class="install-command">
-              <code><span class="prompt" aria-hidden="true">$</span> npm init @dbu6 my-books</code>
-              <button type="button" class="copy" data-copy="npm init @dbu6 my-books" aria-label="Copy the command" hidden><svg class="icon-copy" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z M10.5 5.5v-3h-8v8h3"/></svg><svg class="icon-copied" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></button>
+          <!-- Two columns above the Overview: on the left, the headline, what
+               you get and do with it, Get started and the install prompt, and
+               under them the coding agents that drive it and that it's free
+               and open source with no tracking or telemetry; on the right,
+               the three outcome pillars (any bank or format, almost no manual
+               work, and professional double-entry books). -->
+          <div class="hero-main">
+            <h1>AI workspace for your personal finance</h1>
+            <p class="hero-subtitle"><strong>Clear, complete books for your money.</strong> Track your income and expenses, see your net worth, and use your coding agent to answer any question about your spending, plan for major life decisions, or build custom reports.</p>
+            <div class="actions">
+              <a class="btn-primary btn-hero" href="/docs/install/">Get started<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9.5M8.5 4l4 4-4 4"/></svg></a>
+              <div class="agent-prompt">
+                <span class="agent-prompt-label">Paste into your agent</span>
+                <span class="agent-prompt-line">
+                  <span class="agent-prompt-text">Install dbu6 by following dbu6.com/docs/install.md</span>
+                  <button type="button" class="copy" data-copy="Install dbu6 by following https://dbu6.com/docs/install.md" aria-label="Copy the prompt" hidden><svg class="icon-copy" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 5.5h8v8h-8z M10.5 5.5v-3h-8v8h3"/></svg><svg class="icon-copied" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg></button>
+                </span>
+              </div>
             </div>
+            <dl class="hero-facts">
+              <div>
+                <dt>Works with</dt>
+                <dd>Claude Code, Codex, Pi</dd>
+              </div>
+              <div>
+                <dt>License</dt>
+                <dd><a href={site.github}>Free &amp; open source (MIT)</a></dd>
+              </div>
+              <div>
+                <dt>Privacy</dt>
+                <dd>No tracking · No telemetry</dd>
+              </div>
+            </dl>
           </div>
+
+          <ul class="points hero-points">
+            <li>
+              <h4>Works with any bank, in any format</h4>
+              <p>Drop PDFs, Excel, or CSV statements from any institution—no brittle third-party bank syncs to set up or maintain.</p>
+            </li>
+            <li>
+              <h4>Automatic transaction categorization</h4>
+              <p>Every transaction is automatically sorted into the right account—like Subscriptions, Groceries, or Dining Out. Answer a few simple questions when something ambiguous comes up, and your agent remembers your rules from then on.</p>
+            </li>
+            <li>
+              <h4>Accountant-grade double-entry books</h4>
+              <p>The same accounting system CAs, CPAs, and every business—small and large—rely on around the world.</p>
+            </li>
+            <li>
+              <h4>Stored locally in SQLite</h4>
+              <p>Your books live in a single portable, scriptable SQLite file on your machine that you and your coding agent can query and build on directly.</p>
+            </li>
+          </ul>
         </div>
         <!-- The app in a browser window at the address `dbu6 dev` serves it
              on, so the page shows where it runs. Watch the demo sits on it,
