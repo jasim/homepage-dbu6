@@ -3,6 +3,34 @@ import ImportFlow from "../components/ImportFlow.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import { site } from "../lib/site";
 
+// A first run, shortened from the sample run in docs/first-books.md: what you
+// type, the agent's plan, a progress line, its one round of questions, and the
+// link it ends on. Keep the agent's lines under 60 characters, because they
+// keep their columns and don't wrap.
+type RunTurn = { from: "you" | "agent" | "progress"; text: string };
+const run: RunTurn[] = [
+  { from: "you", text: "Do my books from the statements in ~/Downloads/statements" },
+  { from: "agent", text: `I read 4 files. They are these accounts:
+
+  Standard Chartered  savings account  Oct 2026
+  Federal Bank        savings account  Oct 2026
+  HDFC Millennia      credit card      Oct 2026
+  StanC Super Value   credit card      Oct 2026
+
+This will take a few minutes. You can leave it running.
+Go ahead?` },
+  { from: "you", text: "go" },
+  { from: "progress", text: "Imported Standard Chartered: 41 transactions, 38 sorted" },
+  { from: "agent", text: `Need your call
+  1  ACH D- HDFC BANK CAR LOAN EMI (1 · 10,000)
+       a) HDFC Car Loan    b) Loan Interest   c) skip
+  2  IMPS CR/SAMPLE SENDER (1 · 1,500)
+       a) Gifts Received   b) Receivables     c) skip` },
+  { from: "you", text: "1a 2a" },
+  { from: "agent", text: `Your books are ready to review:
+http://localhost:2345/review` },
+];
+
 // The rules file a user ends up with after some months, shown as the text
 // file it is (custom_mappings_default.prompt): the user's own rules, added as
 // their statements turned up what only they know (who the landlord is, who
@@ -48,14 +76,14 @@ function ruleParts(rule: string): RulePart[] {
        the demo (in a lightbox) played from it.
        The subtitle, the app at localhost, and the window bars' paths in
        ~/my-books show that the books are local.
-    2. Designed for AI power users (#agent): in one column, the agents it
-       works with, what you can ask of yours, two questions asked of it (the
-       answer to the one chosen, with the questions under it to switch
-       between them), then why your books suit an agent.
+    2. Designed for AI power users (#agent): the agents it works with and
+       what you can ask of yours, with importing statements and why your books
+       suit an agent, beside a sample run; then two questions asked of it,
+       which switch between their answers, beside the chosen answer.
     3. Double-entry bookkeeping (#trust, #reports): the system professional
        accountants use, and the whole picture it gives you, in four reports:
        income and expenses, the balance sheet, net worth over time, and
-       every account's ledger, as four cards over one screenshot.
+       every account's ledger, as four tabs over one screenshot.
     4. Import statements and categorize transactions automatically (#how):
        the header, lede and uploading statements beside an illustration of
        the agent writing a parser for a statement, then categorizing them
@@ -160,7 +188,7 @@ function ruleParts(rule: string): RulePart[] {
              Watch the demo is hidden until there's a better video; to bring
              it back, uncomment the link below. The demo dialog and its
              script stay in place, so nothing else needs to change. -->
-        <figure class="shot showcase" style="--shot-width: 1020px">
+        <figure class="shot showcase">
           <div class="browser">
             <div class="browser-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span><span class="address">localhost:2345</span></div>
             {/* <a class="play" href="https://www.youtube.com/watch?v=0PsCb0-01dI" data-demo><span class="play-mark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9.5-5.5z"/></svg></span>Watch the demo</a> */}
@@ -192,35 +220,52 @@ function ruleParts(rule: string): RulePart[] {
 
     <section class="section" id="agent">
       <div class="container">
-        <div class="agent-copy">
-          <h2>Designed for AI power users</h2>
-          <!-- The marks are Simple Icons' Claude and OpenAI paths; Pi has no
-               mark of its own, so it gets the letter. -->
-          <ul class="chips agent-chips" aria-label="Coding agents">
-            <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg>Claude Code</li>
-            <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>Codex</li>
-            <li><svg class="pi" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11 M5.75 4.5v9 M10.25 4.5v7.25a1.75 1.75 0 0 0 3 1.25"/></svg>Pi</li>
-          </ul>
-          <p class="agent-lede">You can run dbu6 entirely from your coding agent, without ever opening the app. Ask it to import your statements, get financial projections, or create new reports and features.</p>
-          <!-- Each question is word for word what was typed to the agent in the
-               take its answer is from (teaser2's screen recordings), and the
-               session title is the one the app gave it. Each card is drawn as
-               that session's window: the title bar (with the books folder the
-               session runs in at its right), the question in the grey
-               bubble the app shows what you typed in, and the answer under it,
-               cropped from the recording to the answer alone.
-               Under the answers, the questions switch between them, like a
-               caption with a dot for each: each a short form of what was
-               asked, and one answer shows at a time. -->
-          <div class="asks" data-tabs>
-            <figure class="shot ask" role="tabpanel" id="panel-subscriptions" aria-labelledby="tab-subscriptions">
-              <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Recurring subscriptions and spending<span class="ask-folder">~/my-books</span></span><span class="ask-question">List all my recurring subscriptions and how much I've paid for them</span></figcaption>
-              <a href="/assets/agent-subscriptions-answer.png"><img src="/assets/agent-subscriptions-answer.png" srcset="/assets/agent-subscriptions-answer.png 2x" alt="The agent's answer: you have 6 subscriptions and paid 38,748 for them from September 2025 to August 2026, in a table of each subscription, how often it charges, each charge, the number of charges and the total paid. Capture: frame at 85 s of subscriptions.mov, cropped x780 y740 w2270 h940 (device px), the scroll-down button painted out."></a>
-            </figure>
-            <figure class="shot ask" role="tabpanel" id="panel-afford" aria-labelledby="tab-afford">
-              <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Bengaluru 2BHK affordability<span class="ask-folder">~/my-books</span></span><span class="ask-question">We're looking at a 2BHK in Bengaluru for about 90 lakh. Can we afford it? And if not, what could we afford, and when?</span></figcaption>
-              <a href="/assets/agent-afford-answer.png"><img src="/assets/agent-afford-answer.png" srcset="/assets/agent-afford-answer.png 2x" alt="The agent's answer: short answer, not yet; the 90 lakh flat becomes doable around mid-2029 using EPF or late 2030 without, and 30 to 35 lakh is realistic today; the figures are from the books for September 2025 to August 2026; and what a 90 lakh flat needs, cash up front of about 37 lakh and an EMI of about 58,600 a month. Capture: frame at 171 s of afford-flat-2.mov, cropped x780 y860 w2270 h810 (device px), the scroll-down button painted out."></a>
-            </figure>
+        <!-- The heading and what the agent does for you, beside a sample run.
+             The run is tall and narrow, so it sits beside the copy, from the
+             top of the section. -->
+        <div class="agent-row">
+          <div class="agent-copy">
+            <h2>Designed for AI power users</h2>
+            <!-- The marks are Simple Icons' Claude and OpenAI paths; Pi has no
+                 mark of its own, so it gets the letter. -->
+            <ul class="chips agent-chips" aria-label="Coding agents">
+              <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg>Claude Code</li>
+              <li><svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>Codex</li>
+              <li><svg class="pi" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11 M5.75 4.5v9 M10.25 4.5v7.25a1.75 1.75 0 0 0 3 1.25"/></svg>Pi</li>
+            </ul>
+            <p class="agent-lede">You can run dbu6 entirely from your coding agent, without ever opening the app. Ask it to import your statements, get financial projections, or create new reports and features.</p>
+            <h3>Import your statements with one prompt</h3>
+            <p>Your coding agent reads your statements and records the transactions. It asks you only about the ones it can't categorize.</p>
+            <p>dbu6 was built from scratch to be agent-native: all your data sits in a single .sqlite file, an AGENTS.md file documents double-entry bookkeeping conventions, and your coding agent calls the exact same internal APIs that power the web app.</p>
+          </div>
+
+          <!-- A sample run: what you type in the grey bubble, as on the
+               answers, and the agent's messages as the aligned text it
+               prints. -->
+          <figure class="ask agent-run" aria-label="A sample first run with the coding agent">
+            <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Do my books<span class="ask-folder">~/my-books</span></span></figcaption>
+            <div class="run-turns">
+              {run.map((turn) => turn.from === "you"
+                ? <p class="ask-question">{turn.text}</p>
+                : <pre class:list={[{ "run-progress": turn.from === "progress" }]}>{turn.text}</pre>)}
+            </div>
+          </figure>
+        </div>
+
+        <!-- Each question is word for word what was typed to the agent in the
+             take its answer is from (teaser2's screen recordings), and the
+             session title is the one the app gave it. Each card is drawn as
+             that session's window: the title bar (with the books folder the
+             session runs in at its right), the question in the grey
+             bubble the app shows what you typed in, and the answer under it,
+             cropped from the recording to the answer alone.
+             The questions, under the copy, switch between the answers, with
+             a dot for each: each a short form of what was asked, and one
+             answer shows at a time. -->
+        <div class="agent-row asks" data-tabs>
+          <div class="agent-copy">
+            <h3>Ask anything about your money</h3>
+            <p>Your coding agent answers from your books, so the figures are your own.</p>
             <div class="ask-cards" role="tablist" aria-label="Questions asked of the agent">
               <button type="button" role="tab" id="tab-subscriptions" aria-controls="panel-subscriptions" aria-selected="true">
                 <span class="report-name">List all my recurring subscriptions</span>
@@ -230,9 +275,15 @@ function ruleParts(rule: string): RulePart[] {
               </button>
             </div>
           </div>
-          <p>
-              dbu6 was built from scratch to be agent-native: all your data sits in a single .sqlite file, an AGENTS.md file documents double-entry bookkeeping conventions, and your coding agent calls the exact same internal APIs that power the web app.
-          </p>
+
+          <figure class="shot ask" role="tabpanel" id="panel-subscriptions" aria-labelledby="tab-subscriptions">
+            <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Recurring subscriptions and spending<span class="ask-folder">~/my-books</span></span><span class="ask-question">List all my recurring subscriptions and how much I've paid for them</span></figcaption>
+            <a href="/assets/agent-subscriptions-answer.png"><img src="/assets/agent-subscriptions-answer.png" srcset="/assets/agent-subscriptions-answer.png 2x" alt="The agent's answer: you have 6 subscriptions and paid 38,748 for them from September 2025 to August 2026, in a table of each subscription, how often it charges, each charge, the number of charges and the total paid. Capture: frame at 85 s of subscriptions.mov, cropped x780 y740 w2270 h940 (device px), the scroll-down button painted out."></a>
+          </figure>
+          <figure class="shot ask" role="tabpanel" id="panel-afford" aria-labelledby="tab-afford">
+            <figcaption><span class="ask-bar" aria-hidden="true"><span class="window-dots"><i></i><i></i><i></i></span>Bengaluru 2BHK affordability<span class="ask-folder">~/my-books</span></span><span class="ask-question">We're looking at a 2BHK in Bengaluru for about 90 lakh. Can we afford it? And if not, what could we afford, and when?</span></figcaption>
+            <a href="/assets/agent-afford-answer.png"><img src="/assets/agent-afford-answer.png" srcset="/assets/agent-afford-answer.png 2x" alt="The agent's answer: short answer, not yet; the 90 lakh flat becomes doable around mid-2029 using EPF or late 2030 without, and 30 to 35 lakh is realistic today; the figures are from the books for September 2025 to August 2026; and what a 90 lakh flat needs, cash up front of about 37 lakh and an EMI of about 58,600 a month. Capture: frame at 171 s of afford-flat-2.mov, cropped x780 y860 w2270 h810 (device px), the scroll-down button painted out."></a>
+          </figure>
         </div>
       </div>
     </section>
@@ -247,9 +298,9 @@ function ruleParts(rule: string): RulePart[] {
         </div>
 
         <div class="reports" id="reports" data-tabs>
-          <!-- Each report is a card: its name and what it shows. The name
-               alone labels the tab; the note describes it. -->
-          <div class="report-cards" role="tablist" aria-label="Reports">
+          <!-- Each tab is one block of text: the report's name and what it
+               shows. The name alone labels the tab; the note describes it. -->
+          <div class="report-tabs" role="tablist" aria-label="Reports">
             <button type="button" role="tab" id="tab-income-expenses" aria-controls="panel-income-expenses" aria-selected="true" aria-labelledby="name-income-expenses" aria-describedby="note-income-expenses">
               <span class="report-name" id="name-income-expenses">Income and expenses</span>
               <span class="report-note" id="note-income-expenses">Across all banks and cards</span>
@@ -269,25 +320,25 @@ function ruleParts(rule: string): RulePart[] {
           </div>
 
           <div class="tab-panel" role="tabpanel" id="panel-income-expenses" aria-labelledby="tab-income-expenses">
-            <figure class="shot" style="--shot-width: 1200px">
+            <figure class="shot">
               <a href="/assets/income-expenses.png"><img src="/assets/income-expenses.png" srcset="/assets/income-expenses.png 2x" alt="dbu6's Income and Expenses report for November 2025 to October 2026: income, spending and the amount saved; income and spending by category with each one's share; a month-by-month chart of income against spending; and the largest spending entries beside it. Capture: seed to 2026-11-01; clock 2026-11-01; open /reports/income-expenses?from_date=2025-11-01&to_date=2026-10-31; clip x228 y0 w1200 h810."></a>
             </figure>
           </div>
 
           <div class="tab-panel" role="tabpanel" id="panel-balance-sheet" aria-labelledby="tab-balance-sheet">
-            <figure class="shot" style="--shot-width: 1440px">
+            <figure class="shot">
               <a href="/assets/balance-sheet.png"><img src="/assets/balance-sheet.png" srcset="/assets/balance-sheet.png 2x" alt="dbu6's Balance Sheet as of today, beside the sidebar: what you own, investments (EPF, mutual funds, PPF, stocks, NPS, gold), bank accounts, deposits and cash as a tree with totals, then what you owe, starting with loans. Capture: open /reports/balance-sheet?to_date=2026-09-30, collapse Mutual Funds, Stocks, Bank Accounts and Deposits; locale en-IN; clip x0 y0 w1440 h720."></a>
             </figure>
           </div>
 
           <div class="tab-panel" role="tabpanel" id="panel-net-worth" aria-labelledby="tab-net-worth">
-            <figure class="shot" style="--shot-width: 1440px">
+            <figure class="shot">
               <a href="/assets/net-worth.png"><img src="/assets/net-worth.png" srcset="/assets/net-worth.png 2x" alt="dbu6's Net Worth Over Time report for all time, beside the sidebar: one row per month with assets, liabilities, net worth and the change from the month before, and the current totals at the bottom. Capture: open /reports/net-worth; locale en-IN; clip x0 y0 w1440 h720."></a>
             </figure>
           </div>
 
           <div class="tab-panel" role="tabpanel" id="panel-ledger" aria-labelledby="tab-ledger">
-            <figure class="shot" style="--shot-width: 1440px">
+            <figure class="shot">
               <a href="/assets/ledger-groceries.png"><img src="/assets/ledger-groceries.png" srcset="/assets/ledger-groceries.png 2x" alt="Account ledger for Groceries from October 2025 to September 2026, beside the sidebar: each spend with its date, the bank, card or cash it was paid from, its narration, amount and running balance. Capture: open /reports/account-ledger?account_id=259&from_date=2025-10-01&to_date=2026-09-30 (259 is Groceries in the seed; look it up again after a re-seed); locale en-IN; clip x0 y0 w1440 h720."></a>
             </figure>
           </div>
@@ -507,8 +558,8 @@ function ruleParts(rule: string): RulePart[] {
       buttons.forEach(function (button, i) {
         button.addEventListener('click', function () { select(button); });
         button.addEventListener('keydown', function (event) {
-          // The cards run across on a wide screen and stack on a narrow
-          // one, so both pairs of arrows move between them.
+          // The questions stack and the reports run across, so both pairs
+          // of arrows move between them.
           var step = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1
             : event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1 : 0;
           if (!step) return;
