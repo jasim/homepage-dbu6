@@ -168,14 +168,6 @@ Run these in your books folder:
 
 `npm start`, `npm run dev`, `npm run check` and `npm run upgrade` do the same.
 
-## Back up your books
-
-Your books are in the `data/` folder, and dbu6 makes no other copy. To back
-them up, stop dbu6 and copy the whole `data/` folder.
-
-Also, `user-config/` is beside `data/` (not inside it) and holds your
-categorization rules and instructions, so it belongs in git.
-
 ## Next
 
 1. [Introduction to dbu6](/docs/), which describes what dbu6 does.

@@ -22,7 +22,8 @@ my-books/
   .env.agent              the agent's token; gitignored, written by `dbu6 agent env` or the app
   tmp/                    statements you dropped, until they are imported; gitignored
   user-config/            mapping rules and categorization prompts
-  data/sqlite.db          the books; gitignored, back it up yourself
+  data/sqlite.db          the books; gitignored
+  data/previous-versions/ the books as they were before each database migration; gitignored
 ```
 
 You can also add two directories and two files to the folder:
@@ -51,8 +52,9 @@ personal finance such as net worth over time and monthly cashflow.
 
 ## Configuration
 
-Everything specific to you is kept in the folder. `data/` is gitignored, and
-the rest is worth committing:
+Everything specific to you is kept in the folder. `data/` is gitignored
+([Back up your data](/docs/backups/) describes how to copy it), and the rest is
+worth committing:
 
 ```
 user-config/
@@ -72,7 +74,8 @@ your coding agent changes them through the API (`npx dbu6 docs books`).
 ## Upgrading
 
 `npx dbu6 upgrade` updates the package to a newer version, migrates the
-database on a verified copy, and then runs `npx dbu6 check`. `dbu6 start` and
+database on a verified copy, stores the old database in
+`data/previous-versions/`, and then runs `npx dbu6 check`. `dbu6 start` and
 `dbu6 migrate` also migrate the database when a migration is pending, while
 nothing else does, and no other tool may change the database's schema.
 

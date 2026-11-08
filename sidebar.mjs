@@ -25,6 +25,7 @@ export default [
       { slug: "docs/statements" },
       { slug: "docs/categorization" },
       { slug: "docs/reports" },
+      { slug: "docs/backups" },
     ],
   },
   {

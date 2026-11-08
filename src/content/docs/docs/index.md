@@ -75,8 +75,8 @@ cloud service and no account with us. Also, the coding agent runs on your
 computer with your own subscription, so your statements go only to the agent
 you already use.
 
-Because dbu6 makes no backups, back up the `data/` folder yourself (see
-[Install dbu6](/docs/install/#back-up-your-books)).
+To back up your books, copy the `data/` folder (see
+[Back up your data](/docs/backups/)).
 
 ## Next
 
